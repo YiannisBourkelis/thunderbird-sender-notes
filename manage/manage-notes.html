@@ -2,40 +2,71 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Manage All Notes</title>
+  <title>Sender Notes Settings</title>
   <link rel="stylesheet" href="manage-notes.css">
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <div class="header-title">
-        <h1>📝 All Sender Notes</h1>
+      <h1>📝 Sender Notes Settings</h1>
+    </div>
+    
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="notes">Notes</button>
+      <button class="tab-btn" data-tab="templates">Quick Notes Templates</button>
+    </div>
+    
+    <!-- Notes Tab -->
+    <div id="notes-tab" class="tab-content active">
+      <div class="tab-header">
         <span id="notes-count" class="notes-count"></span>
-      </div>
-      <div class="header-actions">
         <input type="text" id="search-input" placeholder="Search notes..." />
       </div>
+      
+      <div id="notes-table-container" class="notes-table-container">
+        <table id="notes-table" class="notes-table">
+          <thead>
+            <tr>
+              <th class="sortable" data-sort="pattern">Pattern <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="matchType">Match Type <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="note">Note <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="createdAt">Created <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="updatedAt">Updated <span class="sort-icon"></span></th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="notes-tbody"></tbody>
+        </table>
+      </div>
+      
+      <div id="no-notes" class="no-notes" style="display: none;">
+        <p>No notes saved yet.</p>
+        <p>Right-click on an email and select "Add Note to Sender" to create your first note.</p>
+      </div>
     </div>
     
-    <div id="notes-table-container" class="notes-table-container">
-      <table id="notes-table" class="notes-table">
-        <thead>
-          <tr>
-            <th class="sortable" data-sort="pattern">Pattern <span class="sort-icon"></span></th>
-            <th class="sortable" data-sort="matchType">Match Type <span class="sort-icon"></span></th>
-            <th class="sortable" data-sort="note">Note <span class="sort-icon"></span></th>
-            <th class="sortable" data-sort="createdAt">Created <span class="sort-icon"></span></th>
-            <th class="sortable" data-sort="updatedAt">Updated <span class="sort-icon"></span></th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="notes-tbody"></tbody>
-      </table>
-    </div>
-    
-    <div id="no-notes" class="no-notes" style="display: none;">
-      <p>No notes saved yet.</p>
-      <p>Right-click on an email and select "Add Note to Sender" to create your first note.</p>
+    <!-- Templates Tab -->
+    <div id="templates-tab" class="tab-content">
+      <div class="tab-header">
+        <span id="templates-count" class="notes-count"></span>
+      </div>
+      
+      <div class="templates-section">
+        <p class="templates-description">Quick notes templates can be inserted into notes with a single click. Manage your templates below.</p>
+        
+        <div class="add-template-form">
+          <textarea id="new-template-input" placeholder="Enter new template text..." rows="2"></textarea>
+          <button id="add-template-btn" class="primary">Add Template</button>
+        </div>
+        
+        <div id="templates-list" class="templates-list"></div>
+        
+        <div id="no-templates" class="no-notes" style="display: none;">
+          <p>No templates saved yet.</p>
+          <p>Add your first template above.</p>
+        </div>
+      </div>
     </div>
     
     <div id="status-message" class="status-message"></div>

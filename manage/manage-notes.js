@@ -1,4 +1,4 @@
-// DOM elements
+// DOM elements - Notes tab
 const searchInput = document.getElementById('search-input');
 const notesCount = document.getElementById('notes-count');
 const notesTableContainer = document.getElementById('notes-table-container');
@@ -6,7 +6,15 @@ const notesTbody = document.getElementById('notes-tbody');
 const noNotesDiv = document.getElementById('no-notes');
 const statusMessage = document.getElementById('status-message');
 
+// DOM elements - Templates tab
+const templatesCount = document.getElementById('templates-count');
+const templatesList = document.getElementById('templates-list');
+const noTemplatesDiv = document.getElementById('no-templates');
+const newTemplateInput = document.getElementById('new-template-input');
+const addTemplateBtn = document.getElementById('add-template-btn');
+
 let allNotes = [];
+let allTemplates = [];
 let sortColumn = 'updatedAt';
 let sortDirection = 'desc';
 
@@ -220,12 +228,205 @@ async function deleteNote(note) {
 function showStatus(message, type) {
   statusMessage.textContent = message;
   statusMessage.className = 'status-message ' + type;
+  
+  // Auto-hide success messages
+  if (type === 'success') {
+    setTimeout(() => {
+      statusMessage.style.display = 'none';
+      statusMessage.className = 'status-message';
+    }, 2000);
+  }
 }
+
+// =============== TEMPLATES MANAGEMENT ===============
+
+// Load all templates
+async function loadTemplates() {
+  try {
+    allTemplates = await messenger.runtime.sendMessage({ action: 'getTemplates' }) || [];
+    renderTemplates();
+  } catch (error) {
+    console.error('Error loading templates:', error);
+    showStatus('Error loading templates: ' + error.message, 'error');
+  }
+}
+
+// Render templates list
+function renderTemplates() {
+  // Update count
+  templatesCount.textContent = `${allTemplates.length} template${allTemplates.length !== 1 ? 's' : ''}`;
+  
+  // Show/hide empty state
+  if (allTemplates.length === 0) {
+    templatesList.style.display = 'none';
+    noTemplatesDiv.style.display = 'block';
+    return;
+  }
+  
+  templatesList.style.display = 'flex';
+  noTemplatesDiv.style.display = 'none';
+  
+  templatesList.innerHTML = '';
+  
+  allTemplates.forEach((template, index) => {
+    const item = document.createElement('div');
+    item.className = 'template-item';
+    item.dataset.index = index;
+    
+    const text = document.createElement('div');
+    text.className = 'template-text';
+    text.textContent = template;
+    
+    const actions = document.createElement('div');
+    actions.className = 'template-actions';
+    
+    const editBtn = document.createElement('button');
+    editBtn.className = 'btn-small primary';
+    editBtn.textContent = 'Edit';
+    editBtn.addEventListener('click', () => startEditTemplate(index, template, item));
+    
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn-small danger';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.addEventListener('click', () => deleteTemplate(index));
+    
+    actions.appendChild(editBtn);
+    actions.appendChild(deleteBtn);
+    item.appendChild(text);
+    item.appendChild(actions);
+    templatesList.appendChild(item);
+  });
+}
+
+// Start editing a template
+function startEditTemplate(index, currentText, itemElement) {
+  itemElement.classList.add('editing');
+  itemElement.innerHTML = '';
+  
+  const textarea = document.createElement('textarea');
+  textarea.className = 'template-edit-input';
+  textarea.value = currentText;
+  textarea.rows = 2;
+  
+  const actions = document.createElement('div');
+  actions.className = 'template-actions';
+  
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'btn-small primary';
+  saveBtn.textContent = 'Save';
+  saveBtn.addEventListener('click', () => saveEditTemplate(index, textarea.value));
+  
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'btn-small';
+  cancelBtn.textContent = 'Cancel';
+  cancelBtn.style.background = '#6c757d';
+  cancelBtn.style.color = 'white';
+  cancelBtn.addEventListener('click', () => renderTemplates());
+  
+  actions.appendChild(saveBtn);
+  actions.appendChild(cancelBtn);
+  itemElement.appendChild(textarea);
+  itemElement.appendChild(actions);
+  
+  textarea.focus();
+}
+
+// Save edited template
+async function saveEditTemplate(index, newText) {
+  const text = newText.trim();
+  if (!text) {
+    showStatus('Template text cannot be empty.', 'error');
+    return;
+  }
+  
+  try {
+    await messenger.runtime.sendMessage({
+      action: 'updateTemplate',
+      index: index,
+      template: text
+    });
+    
+    showStatus('Template updated successfully!', 'success');
+    await loadTemplates();
+  } catch (error) {
+    console.error('Error updating template:', error);
+    showStatus('Error: ' + error.message, 'error');
+  }
+}
+
+// Add new template
+async function addTemplate() {
+  const text = newTemplateInput.value.trim();
+  if (!text) {
+    showStatus('Please enter template text.', 'error');
+    return;
+  }
+  
+  try {
+    await messenger.runtime.sendMessage({
+      action: 'addTemplate',
+      template: text
+    });
+    
+    newTemplateInput.value = '';
+    showStatus('Template added successfully!', 'success');
+    await loadTemplates();
+  } catch (error) {
+    console.error('Error adding template:', error);
+    showStatus('Error: ' + error.message, 'error');
+  }
+}
+
+// Delete template
+async function deleteTemplate(index) {
+  if (!confirm('Are you sure you want to delete this template?')) {
+    return;
+  }
+  
+  try {
+    await messenger.runtime.sendMessage({
+      action: 'deleteTemplate',
+      index: index
+    });
+    
+    showStatus('Template deleted successfully!', 'success');
+    await loadTemplates();
+  } catch (error) {
+    console.error('Error deleting template:', error);
+    showStatus('Error: ' + error.message, 'error');
+  }
+}
+
+// =============== TAB SWITCHING ===============
+
+function switchTab(tabName) {
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabName);
+  });
+  
+  // Update tab content
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.toggle('active', content.id === `${tabName}-tab`);
+  });
+}
+
+// =============== INITIALIZATION ===============
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   // Load notes
   loadNotes();
+  
+  // Load templates
+  loadTemplates();
+  
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchTab(btn.dataset.tab);
+    });
+  });
   
   // Search handler
   searchInput.addEventListener('input', () => {
@@ -245,11 +446,25 @@ document.addEventListener('DOMContentLoaded', () => {
       renderNotes();
     });
   });
+  
+  // Add template handlers
+  addTemplateBtn.addEventListener('click', addTemplate);
+  newTemplateInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      addTemplate();
+    }
+  });
 });
 
 // Listen for storage changes to refresh the list
 messenger.storage.onChanged.addListener((changes, areaName) => {
-  if (areaName === 'local' && changes.notes) {
-    loadNotes();
+  if (areaName === 'local') {
+    if (changes.notes) {
+      loadNotes();
+    }
+    if (changes.templates) {
+      loadTemplates();
+    }
   }
 });

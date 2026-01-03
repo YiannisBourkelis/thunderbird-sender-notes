@@ -159,6 +159,9 @@ messenger.runtime.onMessage.addListener(async (message, sender) => {
     case "addTemplate":
       return await addTemplate(message.template);
     
+    case "updateTemplate":
+      return await updateTemplate(message.index, message.template);
+    
     case "deleteTemplate":
       return await deleteTemplate(message.index);
     
@@ -524,6 +527,16 @@ async function deleteTemplate(index) {
   const templates = await getTemplates();
   if (index >= 0 && index < templates.length) {
     templates.splice(index, 1);
+    await messenger.storage.local.set({ templates });
+  }
+  return { success: true, templates };
+}
+
+// Update a template by index
+async function updateTemplate(index, newText) {
+  const templates = await getTemplates();
+  if (index >= 0 && index < templates.length) {
+    templates[index] = newText;
     await messenger.storage.local.set({ templates });
   }
   return { success: true, templates };
