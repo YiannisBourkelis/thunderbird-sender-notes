@@ -33,6 +33,7 @@
   line-height: 1.4;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .mail-note-match-info {
