@@ -230,12 +230,25 @@ function renderQuickNotesTags() {
     tag.textContent = displayText;
     tag.title = template;
     tag.addEventListener('click', () => {
-      noteTextarea.value = template;
-      document.querySelectorAll('.quick-note-tag').forEach(t => t.classList.remove('selected'));
-      tag.classList.add('selected');
+      insertAtCursor(noteTextarea, template);
     });
     quickNotesTagsContainer.appendChild(tag);
   });
+}
+
+// Insert text at cursor position in textarea
+function insertAtCursor(textarea, text) {
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const before = textarea.value.substring(0, start);
+  const after = textarea.value.substring(end);
+  
+  textarea.value = before + text + after;
+  
+  // Move cursor to end of inserted text
+  const newPosition = start + text.length;
+  textarea.setSelectionRange(newPosition, newPosition);
+  textarea.focus();
 }
 
 // Render dropdown menu
@@ -248,11 +261,8 @@ function renderDropdown() {
     item.textContent = template;
     item.title = template;
     item.addEventListener('click', () => {
-      noteTextarea.value = template;
+      insertAtCursor(noteTextarea, template);
       quickNoteDropdown.classList.remove('show');
-      document.querySelectorAll('.quick-note-tag').forEach((t, i) => {
-        t.classList.toggle('selected', i === index);
-      });
     });
     quickNoteDropdown.appendChild(item);
   });
