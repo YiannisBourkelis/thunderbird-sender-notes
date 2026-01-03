@@ -42,22 +42,6 @@
   opacity: 0.8;
 }
 
-.mail-note-close {
-  background: transparent;
-  border: none;
-  font-size: 18px;
-  color: #795548;
-  cursor: pointer;
-  padding: 0 4px;
-  opacity: 0.7;
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.mail-note-close:hover {
-  opacity: 1;
-}
-
 /* Dark theme support */
 @media (prefers-color-scheme: dark) {
   .mail-note-banner {

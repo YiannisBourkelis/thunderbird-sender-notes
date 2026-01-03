@@ -45,18 +45,9 @@
     matchInfo.textContent = `(${matchType}: ${pattern})`;
     matchInfo.title = `Match type: ${matchType}, Pattern: ${pattern}`;
     
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'mail-note-close';
-    closeBtn.textContent = '×';
-    closeBtn.title = 'Dismiss';
-    closeBtn.addEventListener('click', () => {
-      banner.style.display = 'none';
-    });
-    
     banner.appendChild(noteIcon);
     banner.appendChild(noteText);
     banner.appendChild(matchInfo);
-    banner.appendChild(closeBtn);
     
     return banner;
   }
