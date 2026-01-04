@@ -3,22 +3,28 @@
 // Track open note editor windows to avoid duplicates
 const openNoteWindows = new Map(); // key: noteId or email, value: windowId
 
-// Default quick note templates
-const DEFAULT_TEMPLATES = [
-  "Important client - always respond within 24 hours! 🔥",
-  "VIP customer - handle with care ⭐",
-  "Potential spam - verify before responding ⚠️",
-  "Slow payer - request upfront payment 💰",
-  "Old colleague / friend 👋",
-  "Newsletter - low priority 📰"
-];
+// Get default templates using i18n
+function getDefaultTemplates() {
+  return [
+    messenger.i18n.getMessage("templateImportantClient"),
+    messenger.i18n.getMessage("templateVipCustomer"),
+    messenger.i18n.getMessage("templateComplaintHistory"),
+    messenger.i18n.getMessage("templatePotentialSpam"),
+    messenger.i18n.getMessage("templateSlowPayer"),
+    messenger.i18n.getMessage("templateOldColleague"),
+    messenger.i18n.getMessage("templateNewsletter"),
+    messenger.i18n.getMessage("templateSpam"),
+    messenger.i18n.getMessage("templateResearch"),
+    messenger.i18n.getMessage("templateFrequentGuest")
+  ];
+}
 
 // Initialize storage on first install
 messenger.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === "install") {
     await messenger.storage.local.set({ 
       notes: {},
-      templates: DEFAULT_TEMPLATES
+      templates: getDefaultTemplates()
     });
     console.log("Mail Note addon installed successfully");
   }
@@ -550,7 +556,7 @@ async function getCurrentMessageSender(tabId) {
 // Get note templates
 async function getTemplates() {
   const data = await messenger.storage.local.get("templates");
-  return data.templates || DEFAULT_TEMPLATES;
+  return data.templates || getDefaultTemplates();
 }
 
 // Save all templates

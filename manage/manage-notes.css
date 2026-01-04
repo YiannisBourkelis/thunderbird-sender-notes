@@ -27,6 +27,15 @@ body {
   margin: 0;
   font-size: 22px;
   color: #0060df;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-icon {
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
 }
 
 /* Tabs */
@@ -553,6 +562,11 @@ button.btn-small {
 
 .about-icon {
   font-size: 48px;
+}
+
+.about-icon-img {
+  width: 64px;
+  height: 64px;
 }
 
 .about-title-block {

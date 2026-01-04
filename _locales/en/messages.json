@@ -374,5 +374,46 @@
   "aboutLicensedUnder": {
     "message": "Licensed under",
     "description": "About section license text"
+  },
+  
+  "templateImportantClient": {
+    "message": "Important client - always respond within 24 hours! 🔥",
+    "description": "Default template"
+  },
+  "templateVipCustomer": {
+    "message": "VIP customer - handle with care ⭐",
+    "description": "Default template"
+  },
+  "templateComplaintHistory": {
+    "message": "Complaint history - handle carefully ⚠️",
+    "description": "Default template"
+  },
+  "templatePotentialSpam": {
+    "message": "Potential spam - verify before responding ⚠️",
+    "description": "Default template"
+  },
+  "templateSlowPayer": {
+    "message": "Slow payer - request upfront payment 💰",
+    "description": "Default template"
+  },
+  "templateOldColleague": {
+    "message": "Old colleague / friend 👋",
+    "description": "Default template"
+  },
+  "templateNewsletter": {
+    "message": "Newsletter - low priority 📰",
+    "description": "Default template"
+  },
+  "templateSpam": {
+    "message": "SPAM - unsubscribe requested ❌",
+    "description": "Default template"
+  },
+  "templateResearch": {
+    "message": "Important research correspondence - flag 🔬",
+    "description": "Default template"
+  },
+  "templateFrequentGuest": {
+    "message": "Frequent guest - remember preferences 🛏️",
+    "description": "Default template"
   }
 }
