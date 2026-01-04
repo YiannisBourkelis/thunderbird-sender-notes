@@ -12,6 +12,9 @@
   "currentSender": {
     "message": "Τρέχων Αποστολέας:"
   },
+  "originalSender": {
+    "message": "Αρχικά δημιουργήθηκε για:"
+  },
   "matchEmailsThat": {
     "message": "Αντιστοίχιση emails που:"
   },

@@ -7,7 +7,10 @@ const senderAuthor = urlParams.get('author');
 const noteIdParam = urlParams.get('noteId');
 
 // DOM elements
-const senderEmailSpan = document.getElementById('sender-email');
+const senderInfoNew = document.getElementById('sender-info-new');
+const senderInfoEdit = document.getElementById('sender-info-edit');
+const senderEmailNewSpan = document.getElementById('sender-email-new');
+const senderEmailEditSpan = document.getElementById('sender-email-edit');
 const matchTypeSelect = document.getElementById('match-type');
 const matchPatternInput = document.getElementById('match-pattern');
 const matchPreview = document.getElementById('match-preview');
@@ -25,13 +28,12 @@ const dateUpdatedSpan = document.getElementById('date-updated');
 
 let templates = [];
 let existingNoteId = null;
+let originalEmailForNote = null;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
   // Wait for i18n to load custom messages
   await i18nReady;
-  
-  senderEmailSpan.textContent = senderEmail;
   
   // Set default pattern to the full email
   matchPatternInput.value = senderEmail;
@@ -51,11 +53,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   
   if (existingNote) {
+    // Editing an existing note - show original sender info
     matchTypeSelect.value = existingNote.matchType;
     matchPatternInput.value = existingNote.pattern;
     noteTextarea.value = existingNote.note;
     existingNoteId = existingNote.id;
+    originalEmailForNote = existingNote.originalEmail;
     deleteBtn.style.display = 'inline-block';
+    
+    // Show the original email (or pattern if originalEmail not set)
+    const displayEmail = existingNote.originalEmail || existingNote.pattern;
+    senderInfoNew.style.display = 'none';
+    senderInfoEdit.style.display = 'flex';
+    senderEmailEditSpan.textContent = displayEmail;
     
     // Display dates
     if (existingNote.createdAt || existingNote.updatedAt) {
@@ -67,6 +77,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         dateUpdatedSpan.textContent = `${i18n('updated')} ${formatDateTime(existingNote.updatedAt)}`;
       }
     }
+  } else {
+    // Creating a new note - show current sender
+    senderInfoNew.style.display = 'flex';
+    senderInfoEdit.style.display = 'none';
+    senderEmailNewSpan.textContent = senderEmail;
+    originalEmailForNote = senderEmail;
   }
   
   // Update preview initially
@@ -306,7 +322,8 @@ saveBtn.addEventListener('click', async () => {
       noteId: existingNoteId,
       pattern: pattern,
       matchType: matchType,
-      note: note
+      note: note,
+      originalEmail: originalEmailForNote
     });
     
     // Check if save was successful

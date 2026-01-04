@@ -9,9 +9,13 @@
 <body>
   <div class="container">
     <h2 data-i18n="addNoteTitle">Add Note to Sender</h2>
-    <div class="sender-info">
+    <div id="sender-info-new" class="sender-info">
       <label data-i18n="currentSender">Current Sender:</label>
-      <span id="sender-email"></span>
+      <span id="sender-email-new"></span>
+    </div>
+    <div id="sender-info-edit" class="sender-info" style="display: none;">
+      <label data-i18n="originalSender">Originally created for:</label>
+      <span id="sender-email-edit"></span>
     </div>
     
     <!-- Match Type Section -->

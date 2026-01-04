@@ -158,7 +158,7 @@ registerMessageDisplayScript();
 messenger.runtime.onMessage.addListener(async (message, sender) => {
   switch (message.action) {
     case "saveNote":
-      return await saveNote(message.noteId, message.pattern || message.email, message.matchType || 'exact', message.note);
+      return await saveNote(message.noteId, message.pattern || message.email, message.matchType || 'exact', message.note, message.originalEmail);
     
     case "getNote":
       return await getNote(message.email);
@@ -433,7 +433,7 @@ async function checkDuplicatePattern(pattern, matchType, excludeNoteId = null) {
 }
 
 // Save a note
-async function saveNote(existingNoteId, pattern, matchType, note) {
+async function saveNote(existingNoteId, pattern, matchType, note, originalEmail) {
   const data = await messenger.storage.local.get("notes");
   const notes = data.notes || {};
   
@@ -448,10 +448,12 @@ async function saveNote(existingNoteId, pattern, matchType, note) {
     };
   }
   
-  // Preserve the original createdAt date if updating an existing note
+  // Preserve the original createdAt date and originalEmail if updating an existing note
   let originalCreatedAt = null;
+  let preservedOriginalEmail = null;
   if (existingNoteId && notes[existingNoteId]) {
     originalCreatedAt = notes[existingNoteId].createdAt;
+    preservedOriginalEmail = notes[existingNoteId].originalEmail;
     delete notes[existingNoteId];
   }
   
@@ -462,6 +464,7 @@ async function saveNote(existingNoteId, pattern, matchType, note) {
     pattern: pattern.toLowerCase(),
     matchType: matchType,
     note: note,
+    originalEmail: preservedOriginalEmail || originalEmail || pattern,
     createdAt: originalCreatedAt || now,
     updatedAt: now
   };

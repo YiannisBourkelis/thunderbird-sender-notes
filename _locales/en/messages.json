@@ -16,6 +16,10 @@
     "message": "Current Sender:",
     "description": "Label for current sender"
   },
+  "originalSender": {
+    "message": "Originally created for:",
+    "description": "Label for original sender when editing a note"
+  },
   "matchEmailsThat": {
     "message": "Match emails that:",
     "description": "Label for match type section"
