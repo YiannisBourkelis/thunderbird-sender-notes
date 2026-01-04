@@ -54,18 +54,8 @@
     noteText.className = 'mail-note-text';
     noteText.textContent = note;
     
-    // Get translated match type
-    const matchTypeKey = 'matchType' + matchType.charAt(0).toUpperCase() + matchType.slice(1);
-    const translatedMatchType = i18n(matchTypeKey);
-    
-    const matchInfo = document.createElement('span');
-    matchInfo.className = 'mail-note-match-info';
-    matchInfo.textContent = `(${translatedMatchType}: ${pattern})`;
-    matchInfo.title = `${translatedMatchType}: ${pattern}`;
-    
     banner.appendChild(noteIcon);
     banner.appendChild(noteText);
-    banner.appendChild(matchInfo);
     
     return banner;
   }
