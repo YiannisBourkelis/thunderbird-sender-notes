@@ -2,23 +2,22 @@
 
 // Template message keys for fetching translated templates
 const TEMPLATE_KEYS = [
+  "templateVipPrioritize",
   "templateImportantClient",
-  "templateVipCustomer",
-  "templateComplaintHistory",
   "templatePotentialSpam",
+  "templateSpam",
+  "templateComplaintHistory",
+  "templateAggressiveCommunication",
+  "templateOutstandingBalance",
   "templateSlowPayer",
   "templateOldColleague",
-  "templateNewsletter",
-  "templateSpam",
-  "templateResearch",
-  "templateFrequentGuest",
+  "templateFriendlyInformal",
+  "templateConfidentialClient",
   "templateAppointmentNoShow",
   "templateFrequentlyLate",
-  "templateOutstandingBalance",
-  "templateConfidentialClient",
-  "templateAggressiveCommunication",
-  "templateVipPrioritize",
-  "templateFriendlyInformal"
+  "templateFrequentGuest",
+  "templateNewsletter",
+  "templateResearch"
 ];
 
 // Get templates in the specified language

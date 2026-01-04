@@ -381,7 +381,7 @@
     "description": "Welcome page title"
   },
   "welcomeSubtitle": {
-    "message": "Add notes to email senders. Notes are displayed as a banner when viewing emails.",
+    "message": "Keep quick notes about email senders so you have better context the next time they write!",
     "description": "Welcome page subtitle"
   },
   "welcomeSelectLanguage": {
@@ -421,16 +421,32 @@
     "description": "Welcome page button"
   },
   
+  "templateVipPrioritize": {
+    "message": "VIP client - prioritize ⭐",
+    "description": "Default template"
+  },
   "templateImportantClient": {
     "message": "Important client - always respond within 24 hours! 🔥",
+    "description": "Default template"
+  },
+  "templatePotentialSpam": {
+    "message": "Potential spam - verify before responding ⚠️",
+    "description": "Default template"
+  },
+  "templateSpam": {
+    "message": "SPAM - unsubscribe requested ❌",
     "description": "Default template"
   },
   "templateComplaintHistory": {
     "message": "Complaint history - handle carefully ⚠️",
     "description": "Default template"
   },
-  "templatePotentialSpam": {
-    "message": "Potential spam - verify before responding ⚠️",
+  "templateAggressiveCommunication": {
+    "message": "History of aggressive communication - keep record 🛑",
+    "description": "Default template"
+  },
+  "templateOutstandingBalance": {
+    "message": "Outstanding balance - do not proceed ⚠️",
     "description": "Default template"
   },
   "templateSlowPayer": {
@@ -441,20 +457,12 @@
     "message": "Old colleague / friend 👋",
     "description": "Default template"
   },
-  "templateNewsletter": {
-    "message": "Newsletter - low priority 📰",
+  "templateFriendlyInformal": {
+    "message": "Friendly tone · Informal communication",
     "description": "Default template"
   },
-  "templateSpam": {
-    "message": "SPAM - unsubscribe requested ❌",
-    "description": "Default template"
-  },
-  "templateResearch": {
-    "message": "Important research correspondence 🔬",
-    "description": "Default template"
-  },
-  "templateFrequentGuest": {
-    "message": "Frequent guest - remember preferences 🛏️",
+  "templateConfidentialClient": {
+    "message": "Confidential client - limit internal sharing 🔒",
     "description": "Default template"
   },
   "templateAppointmentNoShow": {
@@ -465,24 +473,16 @@
     "message": "Frequently late to appointments - allow buffer ⏱️",
     "description": "Default template"
   },
-  "templateOutstandingBalance": {
-    "message": "Outstanding balance - do not proceed ⚠️",
+  "templateFrequentGuest": {
+    "message": "Frequent guest - remember preferences 🛏️",
     "description": "Default template"
   },
-  "templateConfidentialClient": {
-    "message": "Confidential client - limit internal sharing 🔒",
+  "templateNewsletter": {
+    "message": "Newsletter - low priority 📰",
     "description": "Default template"
   },
-  "templateAggressiveCommunication": {
-    "message": "History of aggressive communication - keep record 🛑",
-    "description": "Default template"
-  },
-  "templateVipPrioritize": {
-    "message": "VIP client - prioritize ⭐",
-    "description": "Default template"
-  },
-  "templateFriendlyInformal": {
-    "message": "Friendly tone · Informal communication",
+  "templateResearch": {
+    "message": "Important research correspondence 🔬",
     "description": "Default template"
   }
 }

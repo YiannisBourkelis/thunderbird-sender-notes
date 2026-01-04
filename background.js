@@ -6,23 +6,22 @@ const openNoteWindows = new Map(); // key: noteId or email, value: windowId
 // Get default templates using i18n
 function getDefaultTemplates() {
   return [
+    messenger.i18n.getMessage("templateVipPrioritize"),
     messenger.i18n.getMessage("templateImportantClient"),
-    messenger.i18n.getMessage("templateVipCustomer"),
-    messenger.i18n.getMessage("templateComplaintHistory"),
     messenger.i18n.getMessage("templatePotentialSpam"),
+    messenger.i18n.getMessage("templateSpam"),
+    messenger.i18n.getMessage("templateComplaintHistory"),
+    messenger.i18n.getMessage("templateAggressiveCommunication"),
+    messenger.i18n.getMessage("templateOutstandingBalance"),
     messenger.i18n.getMessage("templateSlowPayer"),
     messenger.i18n.getMessage("templateOldColleague"),
-    messenger.i18n.getMessage("templateNewsletter"),
-    messenger.i18n.getMessage("templateSpam"),
-    messenger.i18n.getMessage("templateResearch"),
-    messenger.i18n.getMessage("templateFrequentGuest"),
+    messenger.i18n.getMessage("templateFriendlyInformal"),
+    messenger.i18n.getMessage("templateConfidentialClient"),
     messenger.i18n.getMessage("templateAppointmentNoShow"),
     messenger.i18n.getMessage("templateFrequentlyLate"),
-    messenger.i18n.getMessage("templateOutstandingBalance"),
-    messenger.i18n.getMessage("templateConfidentialClient"),
-    messenger.i18n.getMessage("templateAggressiveCommunication"),
-    messenger.i18n.getMessage("templateVipPrioritize"),
-    messenger.i18n.getMessage("templateFriendlyInformal")
+    messenger.i18n.getMessage("templateFrequentGuest"),
+    messenger.i18n.getMessage("templateNewsletter"),
+    messenger.i18n.getMessage("templateResearch")
   ];
 }
 
