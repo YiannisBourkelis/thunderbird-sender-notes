@@ -425,10 +425,6 @@
     "message": "Important client - always respond within 24 hours! 🔥",
     "description": "Default template"
   },
-  "templateVipCustomer": {
-    "message": "VIP customer - handle with care ⭐",
-    "description": "Default template"
-  },
   "templateComplaintHistory": {
     "message": "Complaint history - handle carefully ⚠️",
     "description": "Default template"
@@ -454,11 +450,39 @@
     "description": "Default template"
   },
   "templateResearch": {
-    "message": "Important research correspondence - flag 🔬",
+    "message": "Important research correspondence 🔬",
     "description": "Default template"
   },
   "templateFrequentGuest": {
     "message": "Frequent guest - remember preferences 🛏️",
+    "description": "Default template"
+  },
+  "templateAppointmentNoShow": {
+    "message": "Appointment no-show history - confirm before booking ⚠️",
+    "description": "Default template"
+  },
+  "templateFrequentlyLate": {
+    "message": "Frequently late to appointments - allow buffer ⏱️",
+    "description": "Default template"
+  },
+  "templateOutstandingBalance": {
+    "message": "Outstanding balance - do not proceed ⚠️",
+    "description": "Default template"
+  },
+  "templateConfidentialClient": {
+    "message": "Confidential client - limit internal sharing 🔒",
+    "description": "Default template"
+  },
+  "templateAggressiveCommunication": {
+    "message": "History of aggressive communication - keep record 🛑",
+    "description": "Default template"
+  },
+  "templateVipPrioritize": {
+    "message": "VIP client - prioritize ⭐",
+    "description": "Default template"
+  },
+  "templateFriendlyInformal": {
+    "message": "Friendly tone · Informal communication",
     "description": "Default template"
   }
 }

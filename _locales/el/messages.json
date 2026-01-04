@@ -327,9 +327,6 @@
   "templateImportantClient": {
     "message": "Σημαντικός πελάτης - απάντηση εντός 24 ωρών! 🔥"
   },
-  "templateVipCustomer": {
-    "message": "VIP πελάτης - χειρισμός με προσοχή ⭐"
-  },
   "templateComplaintHistory": {
     "message": "Ιστορικό παραπόνων - προσεκτικός χειρισμός ⚠️"
   },
@@ -346,12 +343,33 @@
     "message": "Newsletter - χαμηλή προτεραιότητα 📰"
   },
   "templateSpam": {
-    "message": "SPAM - ζητήθηκε διαγραφή ❌"
+    "message": "SPAM - ζήτησα διαγραφή ❌"
   },
   "templateResearch": {
-    "message": "Σημαντική ερευνητική αλληλογραφία - σημείωση 🔬"
+    "message": "Σημαντική ερευνητική αλληλογραφία 🔬"
   },
   "templateFrequentGuest": {
     "message": "Τακτικός επισκέπτης - αποθήκευση προτιμήσεων 🛏️"
+  },
+  "templateAppointmentNoShow": {
+    "message": "Ιστορικό μη προσέλευσης σε ραντεβού - επιβεβαίωση πριν την κράτηση ⚠️"
+  },
+  "templateFrequentlyLate": {
+    "message": "Συχνή καθυστέρηση στα ραντεβού - πρόβλεψη επιπλέον χρόνου ⏱️"
+  },
+  "templateOutstandingBalance": {
+    "message": "Ανεξόφλητο υπόλοιπο - δεν προχωράμε ⚠️"
+  },
+  "templateConfidentialClient": {
+    "message": "Εμπιστευτικός πελάτης - περιορισμός εσωτερικής κοινοποίησης 🔒"
+  },
+  "templateAggressiveCommunication": {
+    "message": "Ιστορικό επιθετικής επικοινωνίας - τήρηση αρχείου 🛑"
+  },
+  "templateVipPrioritize": {
+    "message": "VIP πελάτης – προτεραιότητα ⭐"
+  },
+  "templateFriendlyInformal": {
+    "message": "Μιλάμε στον ενικό"
   }
 }

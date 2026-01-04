@@ -11,7 +11,14 @@ const TEMPLATE_KEYS = [
   "templateNewsletter",
   "templateSpam",
   "templateResearch",
-  "templateFrequentGuest"
+  "templateFrequentGuest",
+  "templateAppointmentNoShow",
+  "templateFrequentlyLate",
+  "templateOutstandingBalance",
+  "templateConfidentialClient",
+  "templateAggressiveCommunication",
+  "templateVipPrioritize",
+  "templateFriendlyInformal"
 ];
 
 // Get templates in the specified language

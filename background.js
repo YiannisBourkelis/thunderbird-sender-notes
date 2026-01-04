@@ -15,7 +15,14 @@ function getDefaultTemplates() {
     messenger.i18n.getMessage("templateNewsletter"),
     messenger.i18n.getMessage("templateSpam"),
     messenger.i18n.getMessage("templateResearch"),
-    messenger.i18n.getMessage("templateFrequentGuest")
+    messenger.i18n.getMessage("templateFrequentGuest"),
+    messenger.i18n.getMessage("templateAppointmentNoShow"),
+    messenger.i18n.getMessage("templateFrequentlyLate"),
+    messenger.i18n.getMessage("templateOutstandingBalance"),
+    messenger.i18n.getMessage("templateConfidentialClient"),
+    messenger.i18n.getMessage("templateAggressiveCommunication"),
+    messenger.i18n.getMessage("templateVipPrioritize"),
+    messenger.i18n.getMessage("templateFriendlyInformal")
   ];
 }
 
