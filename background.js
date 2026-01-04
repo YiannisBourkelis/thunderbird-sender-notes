@@ -27,14 +27,14 @@ messenger.runtime.onInstalled.addListener(async (details) => {
 // Create context menu item for adding notes
 messenger.menus.create({
   id: "add-sender-note",
-  title: "Add Note to Sender",
+  title: messenger.i18n.getMessage("contextMenuAddNote"),
   contexts: ["message_list"]
 });
 
 // Create Tools menu item for managing all notes
 messenger.menus.create({
   id: "manage-all-notes",
-  title: "Sender Notes: Manage All",
+  title: messenger.i18n.getMessage("toolsMenuManage"),
   contexts: ["tools_menu"]
 });
 

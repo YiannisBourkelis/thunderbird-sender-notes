@@ -1,9 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "Sender Notes",
+  "name": "__MSG_extensionName__",
   "version": "1.0.0",
-  "description": "Add notes to email senders. Notes are displayed as a banner when viewing emails from that sender.",
+  "description": "__MSG_extensionDescription__",
   "author": "Yiannis",
+  "default_locale": "en",
   "browser_specific_settings": {
     "gecko": {
       "id": "sender-notes@thunderbird.addon",
@@ -24,7 +25,7 @@
     "scripts": ["background.js"]
   },
   "message_display_action": {
-    "default_title": "Sender Notes",
+    "default_title": "__MSG_viewNoteTitle__",
     "default_icon": {
       "16": "icons/icon-48.svg",
       "32": "icons/icon-48.svg"

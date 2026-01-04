@@ -4,6 +4,11 @@
 (function() {
   console.log("Mail Note: Content script loaded in message display");
   
+  // i18n helper
+  function i18n(key, substitutions) {
+    return messenger.i18n.getMessage(key, substitutions) || key;
+  }
+  
   // Avoid duplicate initialization
   if (window.mailNoteInitialized) {
     console.log("Mail Note: Already initialized, skipping");
@@ -31,7 +36,7 @@
     const banner = document.createElement('div');
     banner.className = 'mail-note-banner';
     banner.dataset.noteId = noteId;
-    banner.title = 'Click to edit this note';
+    banner.title = i18n('bannerClickToEdit');
     
     // Add click handler to edit the note
     banner.addEventListener('click', () => {
@@ -49,10 +54,14 @@
     noteText.className = 'mail-note-text';
     noteText.textContent = note;
     
+    // Get translated match type
+    const matchTypeKey = 'matchType' + matchType.charAt(0).toUpperCase() + matchType.slice(1);
+    const translatedMatchType = i18n(matchTypeKey);
+    
     const matchInfo = document.createElement('span');
     matchInfo.className = 'mail-note-match-info';
-    matchInfo.textContent = `(${matchType}: ${pattern})`;
-    matchInfo.title = `Match type: ${matchType}, Pattern: ${pattern}`;
+    matchInfo.textContent = `(${translatedMatchType}: ${pattern})`;
+    matchInfo.title = `${translatedMatchType}: ${pattern}`;
     
     banner.appendChild(noteIcon);
     banner.appendChild(noteText);

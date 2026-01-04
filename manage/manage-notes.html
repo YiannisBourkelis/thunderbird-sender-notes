@@ -2,38 +2,40 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Sender Notes Settings</title>
+  <title data-i18n="settingsTitle">Sender Notes Settings</title>
   <link rel="stylesheet" href="manage-notes.css">
+  <script src="../shared/i18n.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>📝 Sender Notes Settings</h1>
+      <h1>📝 <span data-i18n="settingsTitle">Sender Notes Settings</span></h1>
     </div>
     
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tab-btn active" data-tab="notes">Notes</button>
-      <button class="tab-btn" data-tab="templates">Quick Notes Templates</button>
+      <button class="tab-btn active" data-tab="notes" data-i18n="tabNotes">Notes</button>
+      <button class="tab-btn" data-tab="templates" data-i18n="tabTemplates">Quick Notes Templates</button>
+      <button class="tab-btn" data-tab="settings" data-i18n="tabSettings">Settings</button>
     </div>
     
     <!-- Notes Tab -->
     <div id="notes-tab" class="tab-content active">
       <div class="tab-header">
         <span id="notes-count" class="notes-count"></span>
-        <input type="text" id="search-input" placeholder="Search notes..." />
+        <input type="text" id="search-input" data-i18n-placeholder="searchNotes" placeholder="Search notes..." />
       </div>
       
       <div id="notes-table-container" class="notes-table-container">
         <table id="notes-table" class="notes-table">
           <thead>
             <tr>
-              <th class="sortable" data-sort="pattern">Pattern <span class="sort-icon"></span></th>
-              <th class="sortable" data-sort="matchType">Match Type <span class="sort-icon"></span></th>
-              <th class="sortable" data-sort="note">Note <span class="sort-icon"></span></th>
-              <th class="sortable" data-sort="createdAt">Created <span class="sort-icon"></span></th>
-              <th class="sortable" data-sort="updatedAt">Updated <span class="sort-icon"></span></th>
-              <th>Actions</th>
+              <th class="sortable" data-sort="pattern"><span data-i18n="columnPattern">Pattern</span> <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="matchType"><span data-i18n="columnMatchType">Match Type</span> <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="note"><span data-i18n="columnNote">Note</span> <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="createdAt"><span data-i18n="columnCreated">Created</span> <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="updatedAt"><span data-i18n="columnUpdated">Updated</span> <span class="sort-icon"></span></th>
+              <th data-i18n="columnActions">Actions</th>
             </tr>
           </thead>
           <tbody id="notes-tbody"></tbody>
@@ -41,8 +43,8 @@
       </div>
       
       <div id="no-notes" class="no-notes" style="display: none;">
-        <p>No notes saved yet.</p>
-        <p>Right-click on an email and select "Add Note to Sender" to create your first note.</p>
+        <p data-i18n="noNotes">No notes saved yet.</p>
+        <p data-i18n="noNotesHint">Right-click on an email and select "Add Note to Sender" to create your first note.</p>
       </div>
     </div>
     
@@ -53,18 +55,42 @@
       </div>
       
       <div class="templates-section">
-        <p class="templates-description">Quick notes templates can be inserted into notes with a single click. Manage your templates below.</p>
+        <p class="templates-description" data-i18n="templatesDescription">Quick notes templates can be inserted into notes with a single click. Manage your templates below.</p>
         
         <div class="add-template-form">
-          <textarea id="new-template-input" placeholder="Enter new template text..." rows="2"></textarea>
-          <button id="add-template-btn" class="primary">Add Template</button>
+          <textarea id="new-template-input" data-i18n-placeholder="newTemplatePlaceholder" placeholder="Enter new template text..." rows="2"></textarea>
+          <button id="add-template-btn" class="primary" data-i18n="addTemplate">Add Template</button>
         </div>
         
         <div id="templates-list" class="templates-list"></div>
         
         <div id="no-templates" class="no-notes" style="display: none;">
-          <p>No templates saved yet.</p>
-          <p>Add your first template above.</p>
+          <p data-i18n="noTemplates">No templates saved yet.</p>
+          <p data-i18n="noTemplatesHint">Add your first template above.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Settings Tab -->
+    <div id="settings-tab" class="tab-content">
+      <div class="settings-section">
+        <h3 data-i18n="languageSettings">Language</h3>
+        <p class="settings-description" data-i18n="languageDescription">Select your preferred language for the addon interface.</p>
+        
+        <div class="setting-row">
+          <select id="language-select" class="settings-select">
+            <option value="auto" data-i18n="languageAuto">Auto (use Thunderbird language)</option>
+            <option value="en">English</option>
+            <option value="el">Ελληνικά (Greek)</option>
+          </select>
+        </div>
+        
+        <div class="contribute-section">
+          <p class="contribute-text">
+            <span data-i18n="contributeTranslation">Want to contribute a translation?</span>
+            <br>
+            <small data-i18n="contributeTranslationHint">Check the _locales folder in the addon source for translation files.</small>
+          </p>
         </div>
       </div>
     </div>

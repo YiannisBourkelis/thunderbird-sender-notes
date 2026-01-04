@@ -2,28 +2,29 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Add Note to Sender</title>
+  <title data-i18n="addNoteTitle">Add Note to Sender</title>
   <link rel="stylesheet" href="add-note.css">
+  <script src="../shared/i18n.js"></script>
 </head>
 <body>
   <div class="container">
-    <h2>Add Note to Sender</h2>
+    <h2 data-i18n="addNoteTitle">Add Note to Sender</h2>
     <div class="sender-info">
-      <label>Current Sender:</label>
+      <label data-i18n="currentSender">Current Sender:</label>
       <span id="sender-email"></span>
     </div>
     
     <!-- Match Type Section -->
     <div class="form-group">
-      <label>Match emails that:</label>
+      <label data-i18n="matchEmailsThat">Match emails that:</label>
       <div class="match-row">
         <select id="match-type" class="match-select">
-          <option value="exact">Exactly match</option>
-          <option value="startsWith">Start with</option>
-          <option value="endsWith">End with</option>
-          <option value="contains">Contain</option>
+          <option value="exact" data-i18n="exactlyMatch">Exactly match</option>
+          <option value="startsWith" data-i18n="startWith">Start with</option>
+          <option value="endsWith" data-i18n="endWith">End with</option>
+          <option value="contains" data-i18n="contain">Contain</option>
         </select>
-        <input type="text" id="match-pattern" class="match-input" placeholder="Enter pattern...">
+        <input type="text" id="match-pattern" class="match-input" data-i18n-placeholder="enterPattern" placeholder="Enter pattern...">
       </div>
       <div id="match-preview" class="match-preview"></div>
     </div>
@@ -35,9 +36,9 @@
       
       <!-- Textarea with floating dropdown button -->
       <div class="textarea-container">
-        <textarea id="note-text" placeholder="Enter your note about this sender..." rows="3"></textarea>
+        <textarea id="note-text" data-i18n-placeholder="notePlaceholder" placeholder="Enter your note about this sender..." rows="3"></textarea>
         <div class="dropdown floating-dropdown">
-          <button id="quick-note-dropdown-btn" class="dropdown-btn floating-btn" title="Quick Notes Templates">📝</button>
+          <button id="quick-note-dropdown-btn" class="dropdown-btn floating-btn" data-i18n-title="tabTemplates" title="Quick Notes Templates">📝</button>
           <div id="quick-note-dropdown" class="dropdown-content dropdown-right">
             <!-- Quick notes will be inserted here -->
           </div>
@@ -52,9 +53,9 @@
     </div>
     
     <div class="buttons">
-      <button id="save-btn" class="primary">Save Note</button>
-      <button id="delete-btn" class="danger" style="display: none;">Delete Note</button>
-      <button id="cancel-btn" class="secondary">Cancel</button>
+      <button id="save-btn" class="primary" data-i18n="saveNote">Save Note</button>
+      <button id="delete-btn" class="danger" style="display: none;" data-i18n="deleteNote">Delete Note</button>
+      <button id="cancel-btn" class="secondary" data-i18n="cancel">Cancel</button>
     </div>
     
     <div id="status-message" class="status-message"></div>

@@ -1,0 +1,267 @@
+{
+  "extensionName": {
+    "message": "Σημειώσεις Αποστολέα"
+  },
+  "extensionDescription": {
+    "message": "Προσθέστε σημειώσεις σε αποστολείς email. Οι σημειώσεις εμφανίζονται ως banner κατά την προβολή emails από τον αποστολέα."
+  },
+  
+  "addNoteTitle": {
+    "message": "Προσθήκη Σημείωσης"
+  },
+  "currentSender": {
+    "message": "Τρέχων Αποστολέας:"
+  },
+  "matchEmailsThat": {
+    "message": "Αντιστοίχιση emails που:"
+  },
+  "exactlyMatch": {
+    "message": "Ταιριάζουν ακριβώς"
+  },
+  "startWith": {
+    "message": "Ξεκινούν με"
+  },
+  "endWith": {
+    "message": "Τελειώνουν με"
+  },
+  "contain": {
+    "message": "Περιέχουν"
+  },
+  "enterPattern": {
+    "message": "Εισάγετε μοτίβο..."
+  },
+  "notePlaceholder": {
+    "message": "Εισάγετε τη σημείωσή σας για αυτόν τον αποστολέα..."
+  },
+  "saveNote": {
+    "message": "Αποθήκευση"
+  },
+  "deleteNote": {
+    "message": "Διαγραφή"
+  },
+  "cancel": {
+    "message": "Ακύρωση"
+  },
+  "created": {
+    "message": "Δημιουργία:"
+  },
+  "updated": {
+    "message": "Ενημέρωση:"
+  },
+  "willMatchOnly": {
+    "message": "Θα ταιριάξει μόνο:"
+  },
+  "willMatchStarting": {
+    "message": "Θα ταιριάξει emails που ξεκινούν με:"
+  },
+  "willMatchEnding": {
+    "message": "Θα ταιριάξει emails που τελειώνουν με:"
+  },
+  "willMatchContaining": {
+    "message": "Θα ταιριάξει emails που περιέχουν:"
+  },
+  "patternNoMatch": {
+    "message": "Το μοτίβο δεν ταιριάζει με το τρέχον email"
+  },
+  "noteSaved": {
+    "message": "Η σημείωση αποθηκεύτηκε!"
+  },
+  "noteDeleted": {
+    "message": "Η σημείωση διαγράφηκε!"
+  },
+  "confirmDelete": {
+    "message": "Είστε σίγουροι ότι θέλετε να το διαγράψετε;"
+  },
+  "duplicatePattern": {
+    "message": "Υπάρχει ήδη σημείωση με αυτό το μοτίβο και τύπο αντιστοίχισης."
+  },
+  "emptyNote": {
+    "message": "Παρακαλώ εισάγετε μια σημείωση."
+  },
+  "emptyPattern": {
+    "message": "Παρακαλώ εισάγετε ένα μοτίβο."
+  },
+  "noMessageSelected": {
+    "message": "Δεν έχει επιλεγεί μήνυμα. Παρακαλώ επιλέξτε πρώτα ένα email."
+  },
+  "noSenderInfo": {
+    "message": "Δεν υπάρχουν διαθέσιμες πληροφορίες αποστολέα."
+  },
+  
+  "settingsTitle": {
+    "message": "Ρυθμίσεις Σημειώσεων"
+  },
+  "tabNotes": {
+    "message": "Σημειώσεις"
+  },
+  "tabTemplates": {
+    "message": "Πρότυπα Γρήγορων Σημειώσεων"
+  },
+  "tabSettings": {
+    "message": "Ρυθμίσεις"
+  },
+  "searchNotes": {
+    "message": "Αναζήτηση σημειώσεων..."
+  },
+  "columnPattern": {
+    "message": "Μοτίβο"
+  },
+  "columnMatchType": {
+    "message": "Τύπος"
+  },
+  "columnNote": {
+    "message": "Σημείωση"
+  },
+  "columnCreated": {
+    "message": "Δημιουργία"
+  },
+  "columnUpdated": {
+    "message": "Ενημέρωση"
+  },
+  "columnActions": {
+    "message": "Ενέργειες"
+  },
+  "edit": {
+    "message": "Επεξεργασία"
+  },
+  "delete": {
+    "message": "Διαγραφή"
+  },
+  "noNotes": {
+    "message": "Δεν υπάρχουν αποθηκευμένες σημειώσεις."
+  },
+  "noNotesHint": {
+    "message": "Κάντε δεξί κλικ σε ένα email και επιλέξτε \"Προσθήκη Σημείωσης\" για να δημιουργήσετε την πρώτη σας σημείωση."
+  },
+  "templatesDescription": {
+    "message": "Τα πρότυπα γρήγορων σημειώσεων μπορούν να εισαχθούν με ένα κλικ. Διαχειριστείτε τα πρότυπά σας παρακάτω."
+  },
+  "addTemplate": {
+    "message": "Προσθήκη"
+  },
+  "newTemplatePlaceholder": {
+    "message": "Εισάγετε νέο πρότυπο..."
+  },
+  "noTemplates": {
+    "message": "Δεν υπάρχουν αποθηκευμένα πρότυπα."
+  },
+  "noTemplatesHint": {
+    "message": "Προσθέστε το πρώτο σας πρότυπο παραπάνω."
+  },
+  "templateAdded": {
+    "message": "Το πρότυπο προστέθηκε!"
+  },
+  "templateUpdated": {
+    "message": "Το πρότυπο ενημερώθηκε!"
+  },
+  "templateDeleted": {
+    "message": "Το πρότυπο διαγράφηκε!"
+  },
+  "templateOrderUpdated": {
+    "message": "Η σειρά ενημερώθηκε."
+  },
+  "templateEmpty": {
+    "message": "Το κείμενο του προτύπου δεν μπορεί να είναι κενό."
+  },
+  "dragToReorder": {
+    "message": "Σύρετε για αναδιάταξη"
+  },
+  
+  "languageSettings": {
+    "message": "Γλώσσα"
+  },
+  "languageDescription": {
+    "message": "Επιλέξτε τη γλώσσα για τη διεπαφή του addon."
+  },
+  "languageAuto": {
+    "message": "Αυτόματα (χρήση γλώσσας Thunderbird)"
+  },
+  "settingsSaved": {
+    "message": "Οι ρυθμίσεις αποθηκεύτηκαν!"
+  },
+  "contributeTranslation": {
+    "message": "Θέλετε να συνεισφέρετε μια μετάφραση;"
+  },
+  "contributeTranslationHint": {
+    "message": "Ελέγξτε τον φάκελο _locales στον πηγαίο κώδικα του addon."
+  },
+  
+  "viewNoteTitle": {
+    "message": "Σημειώσεις Αποστολέα"
+  },
+  "addNewNote": {
+    "message": "Νέα Σημείωση"
+  },
+  "notesForSender": {
+    "message": "Σημειώσεις για αυτόν τον αποστολέα:"
+  },
+  "noNotesForSender": {
+    "message": "Δεν υπάρχουν σημειώσεις"
+  },
+  "clickToEdit": {
+    "message": "Κλικ για επεξεργασία"
+  },
+  "manageNotes": {
+    "message": "Διαχείριση Σημειώσεων"
+  },
+  
+  "contextMenuAddNote": {
+    "message": "Προσθήκη Σημείωσης στον Αποστολέα"
+  },
+  "toolsMenuManage": {
+    "message": "Σημειώσεις: Διαχείριση"
+  },
+  
+  "bannerClickToEdit": {
+    "message": "Κλικ για επεξεργασία"
+  },
+  "matchTypeExact": {
+    "message": "ακριβής"
+  },
+  "matchTypeStartsWith": {
+    "message": "ξεκινά με"
+  },
+  "matchTypeEndsWith": {
+    "message": "τελειώνει με"
+  },
+  "matchTypeContains": {
+    "message": "περιέχει"
+  },
+  
+  "noteCount": {
+    "message": "$COUNT$ σημείωση$PLURAL$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "plural": {
+        "content": "$2"
+      }
+    }
+  },
+  "noteCountFiltered": {
+    "message": "$FILTERED$ από $TOTAL$ σημειώσεις",
+    "placeholders": {
+      "filtered": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "templateCount": {
+    "message": "$COUNT$ πρότυπο$PLURAL$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "plural": {
+        "content": "$2"
+      }
+    }
+  },
+  "save": {
+    "message": "Αποθήκευση"
+  }
+}

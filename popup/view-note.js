@@ -1,3 +1,5 @@
+// Uses i18n() from shared/i18n.js
+
 let currentSender = null;
 let currentNotes = [];
 
@@ -118,14 +120,14 @@ function renderNotesList(notes) {
     
     const matchInfo = document.createElement('span');
     matchInfo.className = 'note-match-info';
-    matchInfo.textContent = `${note.matchType}: ${note.pattern}`;
+    matchInfo.textContent = `${i18n('matchType' + note.matchType.charAt(0).toUpperCase() + note.matchType.slice(1))}: ${note.pattern}`;
     
     const noteActions = document.createElement('div');
     noteActions.className = 'note-actions';
     
     const editBtn = document.createElement('button');
     editBtn.className = 'btn-small primary';
-    editBtn.textContent = 'Edit';
+    editBtn.textContent = i18n('edit');
     editBtn.addEventListener('click', () => editNote(note));
     
     noteActions.appendChild(editBtn);
@@ -154,7 +156,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("Mail Note: currentSender =", currentSender);
     
     if (!currentSender || !currentSender.email) {
-      showStatus('No message selected. Please select an email first.', 'error');
+      showStatus(i18n('noMessageSelected'), 'error');
       return;
     }
     
@@ -187,7 +189,7 @@ addNoteBtn.addEventListener('click', async () => {
   console.log("Mail Note: Add Note button clicked, currentSender =", currentSender);
   
   if (!currentSender || !currentSender.email) {
-    showStatus('No sender information available.', 'error');
+    showStatus(i18n('noSenderInfo'), 'error');
     return;
   }
   
@@ -204,7 +206,7 @@ addAnotherNoteBtn.addEventListener('click', async () => {
   console.log("Mail Note: Add Another Note button clicked, currentSender =", currentSender);
   
   if (!currentSender || !currentSender.email) {
-    showStatus('No sender information available.', 'error');
+    showStatus(i18n('noSenderInfo'), 'error');
     return;
   }
   
@@ -240,7 +242,7 @@ async function editNote(note) {
   console.log("Mail Note: Edit note clicked", note);
   
   if (!currentSender || !currentSender.email) {
-    showStatus('No sender information available.', 'error');
+    showStatus(i18n('noSenderInfo'), 'error');
     return;
   }
   
@@ -256,7 +258,7 @@ async function editNote(note) {
 async function deleteNote(note) {
   console.log("Mail Note: Delete note clicked", note);
   
-  if (confirm('Are you sure you want to delete this note?')) {
+  if (confirm(i18n('confirmDelete'))) {
     try {
       await messenger.runtime.sendMessage({
         action: 'deleteNote',
@@ -269,7 +271,7 @@ async function deleteNote(note) {
         email: currentSender.email
       });
       
-      showStatus('Note deleted!', 'success');
+      showStatus(i18n('noteDeleted'), 'success');
       
       // Reload the notes list
       currentNotes = await messenger.runtime.sendMessage({

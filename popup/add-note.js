@@ -1,3 +1,5 @@
+// Uses i18n() from shared/i18n.js
+
 // Get URL parameters
 const urlParams = new URLSearchParams(window.location.search);
 const senderEmail = urlParams.get('email');
@@ -56,10 +58,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (existingNote.createdAt || existingNote.updatedAt) {
       noteDatesDiv.style.display = 'block';
       if (existingNote.createdAt) {
-        dateCreatedSpan.textContent = `Created: ${formatDateTime(existingNote.createdAt)}`;
+        dateCreatedSpan.textContent = `${i18n('created')} ${formatDateTime(existingNote.createdAt)}`;
       }
       if (existingNote.updatedAt) {
-        dateUpdatedSpan.textContent = `Updated: ${formatDateTime(existingNote.updatedAt)}`;
+        dateUpdatedSpan.textContent = `${i18n('updated')} ${formatDateTime(existingNote.updatedAt)}`;
       }
     }
   }
@@ -178,21 +180,21 @@ async function updateMatchPreview() {
     let description = '';
     switch (matchType) {
       case 'exact':
-        description = `Will match only: <strong>${pattern}</strong>`;
+        description = `${i18n('willMatchOnly')} <strong>${pattern}</strong>`;
         break;
       case 'startsWith':
-        description = `Will match emails starting with: <strong>${pattern}</strong>*`;
+        description = `${i18n('willMatchStarting')} <strong>${pattern}</strong>*`;
         break;
       case 'endsWith':
-        description = `Will match emails ending with: *<strong>${pattern}</strong>`;
+        description = `${i18n('willMatchEnding')} *<strong>${pattern}</strong>`;
         break;
       case 'contains':
-        description = `Will match emails containing: *<strong>${pattern}</strong>*`;
+        description = `${i18n('willMatchContaining')} *<strong>${pattern}</strong>*`;
         break;
     }
     matchPreview.innerHTML = `<span class="preview-valid">✓ ${description}</span>`;
   } else {
-    matchPreview.innerHTML = `<span class="preview-error">✗ Pattern "${pattern}" does not match current sender "${senderEmail}"</span>`;
+    matchPreview.innerHTML = `<span class="preview-error">✗ ${i18n('patternNoMatch')}</span>`;
   }
 }
 
@@ -281,17 +283,17 @@ saveBtn.addEventListener('click', async () => {
   
   // Validation
   if (!pattern) {
-    showStatus('Pattern cannot be empty.', 'error');
+    showStatus(i18n('emptyPattern'), 'error');
     return;
   }
   
   if (!note) {
-    showStatus('Note cannot be empty.', 'error');
+    showStatus(i18n('emptyNote'), 'error');
     return;
   }
   
   if (!validatePattern(senderEmail, pattern, matchType)) {
-    showStatus(`Pattern "${pattern}" does not match the current sender email.`, 'error');
+    showStatus(i18n('patternNoMatch'), 'error');
     return;
   }
   
@@ -320,7 +322,7 @@ saveBtn.addEventListener('click', async () => {
       email: senderEmail
     });
     
-    showStatus('Note saved successfully!', 'success');
+    showStatus(i18n('noteSaved'), 'success');
     setTimeout(() => window.close(), 400);
   } catch (error) {
     showStatus('Error saving note: ' + error.message, 'error');
@@ -329,7 +331,7 @@ saveBtn.addEventListener('click', async () => {
 
 // Delete note
 deleteBtn.addEventListener('click', async () => {
-  if (confirm('Are you sure you want to delete this note?')) {
+  if (confirm(i18n('confirmDelete'))) {
     try {
       await messenger.runtime.sendMessage({
         action: 'deleteNote',
@@ -342,7 +344,7 @@ deleteBtn.addEventListener('click', async () => {
         email: senderEmail
       });
       
-      showStatus('Note deleted!', 'success');
+      showStatus(i18n('noteDeleted'), 'success');
       setTimeout(() => window.close(), 400);
     } catch (error) {
       showStatus('Error deleting note: ' + error.message, 'error');

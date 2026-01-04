@@ -465,7 +465,65 @@ button.btn-small {
   gap: 4px;
 }
 
-/* Dark mode for templates */
+/* Settings Tab Styles */
+.settings-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.settings-section h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #0060df;
+}
+
+.settings-description {
+  color: #5c5c5c;
+  margin: 0 0 16px 0;
+  font-size: 14px;
+}
+
+.setting-row {
+  margin-bottom: 16px;
+}
+
+.settings-select {
+  padding: 10px 14px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 280px;
+  background: white;
+  cursor: pointer;
+}
+
+.settings-select:focus {
+  outline: none;
+  border-color: #0060df;
+  box-shadow: 0 0 0 2px rgba(0, 96, 223, 0.2);
+}
+
+.contribute-section {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+}
+
+.contribute-text {
+  margin: 0;
+  color: #6c757d;
+  font-size: 13px;
+}
+
+.contribute-text small {
+  color: #868e96;
+}
+
+/* Dark mode for templates and settings */
 @media (prefers-color-scheme: dark) {
   .templates-description {
     color: #b1b1b3;
@@ -501,5 +559,38 @@ button.btn-small {
   .template-edit-input:focus {
     border-color: #45a1ff;
     box-shadow: 0 0 0 2px rgba(69, 161, 255, 0.2);
+  }
+  
+  .settings-section {
+    background: #38383d;
+  }
+  
+  .settings-section h3 {
+    color: #45a1ff;
+  }
+  
+  .settings-description {
+    color: #b1b1b3;
+  }
+  
+  .settings-select {
+    background-color: #2b2a33;
+    border-color: #5b5b66;
+    color: #fbfbfe;
+  }
+  
+  .settings-select:focus {
+    border-color: #45a1ff;
+    box-shadow: 0 0 0 2px rgba(69, 161, 255, 0.2);
+  }
+  
+  .contribute-section {
+    background: #2b2a33;
+    border-color: #5b5b66;
+  }
+  
+  .contribute-text,
+  .contribute-text small {
+    color: #b1b1b3;
   }
 }

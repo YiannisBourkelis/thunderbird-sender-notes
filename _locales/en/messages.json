@@ -1,0 +1,345 @@
+{
+  "extensionName": {
+    "message": "Sender Notes",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Add notes to email senders. Notes are displayed as a banner when viewing emails from that sender.",
+    "description": "Description of the extension"
+  },
+  
+  "addNoteTitle": {
+    "message": "Add Note to Sender",
+    "description": "Title of the add note popup"
+  },
+  "currentSender": {
+    "message": "Current Sender:",
+    "description": "Label for current sender"
+  },
+  "matchEmailsThat": {
+    "message": "Match emails that:",
+    "description": "Label for match type section"
+  },
+  "exactlyMatch": {
+    "message": "Exactly match",
+    "description": "Match type option"
+  },
+  "startWith": {
+    "message": "Start with",
+    "description": "Match type option"
+  },
+  "endWith": {
+    "message": "End with",
+    "description": "Match type option"
+  },
+  "contain": {
+    "message": "Contain",
+    "description": "Match type option"
+  },
+  "enterPattern": {
+    "message": "Enter pattern...",
+    "description": "Placeholder for pattern input"
+  },
+  "notePlaceholder": {
+    "message": "Enter your note about this sender...",
+    "description": "Placeholder for note textarea"
+  },
+  "saveNote": {
+    "message": "Save Note",
+    "description": "Save button text"
+  },
+  "deleteNote": {
+    "message": "Delete Note",
+    "description": "Delete button text"
+  },
+  "cancel": {
+    "message": "Cancel",
+    "description": "Cancel button text"
+  },
+  "created": {
+    "message": "Created:",
+    "description": "Created date label"
+  },
+  "updated": {
+    "message": "Updated:",
+    "description": "Updated date label"
+  },
+  "willMatchOnly": {
+    "message": "Will match only:",
+    "description": "Preview text for exact match"
+  },
+  "willMatchStarting": {
+    "message": "Will match emails starting with:",
+    "description": "Preview text for startsWith match"
+  },
+  "willMatchEnding": {
+    "message": "Will match emails ending with:",
+    "description": "Preview text for endsWith match"
+  },
+  "willMatchContaining": {
+    "message": "Will match emails containing:",
+    "description": "Preview text for contains match"
+  },
+  "patternNoMatch": {
+    "message": "Pattern doesn't match current email",
+    "description": "Warning when pattern doesn't match"
+  },
+  "noteSaved": {
+    "message": "Note saved successfully!",
+    "description": "Success message after saving"
+  },
+  "noteDeleted": {
+    "message": "Note deleted successfully!",
+    "description": "Success message after deleting"
+  },
+  "confirmDelete": {
+    "message": "Are you sure you want to delete this?",
+    "description": "Confirmation message for delete"
+  },
+  "duplicatePattern": {
+    "message": "A note with this exact pattern and match type already exists.",
+    "description": "Error for duplicate pattern"
+  },
+  "emptyNote": {
+    "message": "Please enter a note.",
+    "description": "Error for empty note"
+  },
+  "emptyPattern": {
+    "message": "Please enter a pattern.",
+    "description": "Error for empty pattern"
+  },
+  "noMessageSelected": {
+    "message": "No message selected. Please select an email first.",
+    "description": "Error when no message is selected"
+  },
+  "noSenderInfo": {
+    "message": "No sender information available.",
+    "description": "Error when sender info not available"
+  },
+  
+  "settingsTitle": {
+    "message": "Sender Notes Settings",
+    "description": "Title of settings page"
+  },
+  "tabNotes": {
+    "message": "Notes",
+    "description": "Notes tab label"
+  },
+  "tabTemplates": {
+    "message": "Quick Notes Templates",
+    "description": "Templates tab label"
+  },
+  "tabSettings": {
+    "message": "Settings",
+    "description": "Settings tab label"
+  },
+  "searchNotes": {
+    "message": "Search notes...",
+    "description": "Search placeholder"
+  },
+  "columnPattern": {
+    "message": "Pattern",
+    "description": "Table column header"
+  },
+  "columnMatchType": {
+    "message": "Match Type",
+    "description": "Table column header"
+  },
+  "columnNote": {
+    "message": "Note",
+    "description": "Table column header"
+  },
+  "columnCreated": {
+    "message": "Created",
+    "description": "Table column header"
+  },
+  "columnUpdated": {
+    "message": "Updated",
+    "description": "Table column header"
+  },
+  "columnActions": {
+    "message": "Actions",
+    "description": "Table column header"
+  },
+  "edit": {
+    "message": "Edit",
+    "description": "Edit button"
+  },
+  "delete": {
+    "message": "Delete",
+    "description": "Delete button"
+  },
+  "noNotes": {
+    "message": "No notes saved yet.",
+    "description": "Empty state message"
+  },
+  "noNotesHint": {
+    "message": "Right-click on an email and select \"Add Note to Sender\" to create your first note.",
+    "description": "Empty state hint"
+  },
+  "templatesDescription": {
+    "message": "Quick notes templates can be inserted into notes with a single click. Manage your templates below.",
+    "description": "Templates section description"
+  },
+  "addTemplate": {
+    "message": "Add Template",
+    "description": "Add template button"
+  },
+  "newTemplatePlaceholder": {
+    "message": "Enter new template text...",
+    "description": "New template placeholder"
+  },
+  "noTemplates": {
+    "message": "No templates saved yet.",
+    "description": "Empty templates message"
+  },
+  "noTemplatesHint": {
+    "message": "Add your first template above.",
+    "description": "Empty templates hint"
+  },
+  "templateAdded": {
+    "message": "Template added successfully!",
+    "description": "Success message"
+  },
+  "templateUpdated": {
+    "message": "Template updated successfully!",
+    "description": "Success message"
+  },
+  "templateDeleted": {
+    "message": "Template deleted successfully!",
+    "description": "Success message"
+  },
+  "templateOrderUpdated": {
+    "message": "Template order updated.",
+    "description": "Success message for reorder"
+  },
+  "templateEmpty": {
+    "message": "Template text cannot be empty.",
+    "description": "Error message"
+  },
+  "dragToReorder": {
+    "message": "Drag to reorder",
+    "description": "Drag handle tooltip"
+  },
+  
+  "languageSettings": {
+    "message": "Language",
+    "description": "Language settings section"
+  },
+  "languageDescription": {
+    "message": "Select your preferred language for the addon interface.",
+    "description": "Language settings description"
+  },
+  "languageAuto": {
+    "message": "Auto (use Thunderbird language)",
+    "description": "Auto language option"
+  },
+  "settingsSaved": {
+    "message": "Settings saved!",
+    "description": "Settings saved message"
+  },
+  "contributeTranslation": {
+    "message": "Want to contribute a translation?",
+    "description": "Translation contribution prompt"
+  },
+  "contributeTranslationHint": {
+    "message": "Check the _locales folder in the addon source for translation files.",
+    "description": "Translation contribution hint"
+  },
+  
+  "viewNoteTitle": {
+    "message": "Sender Notes",
+    "description": "View note popup title"
+  },
+  "addNewNote": {
+    "message": "Add New Note",
+    "description": "Add new note button"
+  },
+  "notesForSender": {
+    "message": "Notes for this sender:",
+    "description": "Notes list header"
+  },
+  "noNotesForSender": {
+    "message": "No notes for this sender",
+    "description": "No notes message"
+  },
+  "clickToEdit": {
+    "message": "Click to edit this note",
+    "description": "Tooltip for clickable notes"
+  },
+  "manageNotes": {
+    "message": "Manage All Notes",
+    "description": "Link to manage notes"
+  },
+  
+  "contextMenuAddNote": {
+    "message": "Add Note to Sender",
+    "description": "Context menu item"
+  },
+  "toolsMenuManage": {
+    "message": "Sender Notes: Manage All",
+    "description": "Tools menu item"
+  },
+  
+  "bannerClickToEdit": {
+    "message": "Click to edit this note",
+    "description": "Banner tooltip"
+  },
+  "matchTypeExact": {
+    "message": "exact",
+    "description": "Match type display name"
+  },
+  "matchTypeStartsWith": {
+    "message": "startsWith",
+    "description": "Match type display name"
+  },
+  "matchTypeEndsWith": {
+    "message": "endsWith",
+    "description": "Match type display name"
+  },
+  "matchTypeContains": {
+    "message": "contains",
+    "description": "Match type display name"
+  },
+  
+  "noteCount": {
+    "message": "$COUNT$ note$PLURAL$",
+    "description": "Note count display",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "plural": {
+        "content": "$2"
+      }
+    }
+  },
+  "noteCountFiltered": {
+    "message": "$FILTERED$ of $TOTAL$ notes",
+    "description": "Filtered note count display",
+    "placeholders": {
+      "filtered": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "templateCount": {
+    "message": "$COUNT$ template$PLURAL$",
+    "description": "Template count display",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "plural": {
+        "content": "$2"
+      }
+    }
+  },
+  "save": {
+    "message": "Save",
+    "description": "Save button"
+  }
+}

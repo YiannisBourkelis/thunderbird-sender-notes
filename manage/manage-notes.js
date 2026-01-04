@@ -1,3 +1,5 @@
+// Uses i18n() from shared/i18n.js
+
 // DOM elements - Notes tab
 const searchInput = document.getElementById('search-input');
 const notesCount = document.getElementById('notes-count');
@@ -13,10 +15,31 @@ const noTemplatesDiv = document.getElementById('no-templates');
 const newTemplateInput = document.getElementById('new-template-input');
 const addTemplateBtn = document.getElementById('add-template-btn');
 
+// DOM elements - Settings tab
+const languageSelect = document.getElementById('language-select');
+
 let allNotes = [];
 let allTemplates = [];
 let sortColumn = 'updatedAt';
 let sortDirection = 'desc';
+
+// Load settings from storage
+async function loadSettings() {
+  const { settings = {} } = await messenger.storage.local.get('settings');
+  if (languageSelect) {
+    languageSelect.value = settings.language || 'auto';
+  }
+}
+
+// Save settings to storage and reload to apply language
+async function saveSettings() {
+  const settings = {
+    language: languageSelect ? languageSelect.value : 'auto'
+  };
+  await messenger.storage.local.set({ settings });
+  // Reload page to apply new language
+  window.location.reload();
+}
 
 // Format date for display
 function formatDate(dateString) {
@@ -38,13 +61,24 @@ function getMatchTypeBadgeClass(matchType) {
 
 // Get match type display name
 function getMatchTypeDisplay(matchType) {
-  const names = {
-    'exact': 'Exact',
-    'startsWith': 'Starts With',
-    'endsWith': 'Ends With',
-    'contains': 'Contains'
+  const keys = {
+    'exact': 'matchTypeExact',
+    'startsWith': 'matchTypeStartsWith',
+    'endsWith': 'matchTypeEndsWith',
+    'contains': 'matchTypeContains'
   };
-  return names[matchType] || matchType;
+  const translated = i18n(keys[matchType]);
+  // Fallback to English names if translation fails
+  if (translated === keys[matchType]) {
+    const names = {
+      'exact': 'Exact',
+      'startsWith': 'Starts With',
+      'endsWith': 'Ends With',
+      'contains': 'Contains'
+    };
+    return names[matchType] || matchType;
+  }
+  return translated;
 }
 
 // Load all notes
@@ -107,9 +141,10 @@ function renderNotes() {
   if (allNotes.length === 0) {
     notesCount.textContent = '';
   } else if (filteredNotes.length === allNotes.length) {
-    notesCount.textContent = `${allNotes.length} note${allNotes.length !== 1 ? 's' : ''}`;
+    const plural = allNotes.length !== 1 ? 's' : '';
+    notesCount.textContent = i18n('noteCount', [allNotes.length.toString(), plural]);
   } else {
-    notesCount.textContent = `${filteredNotes.length} of ${allNotes.length} notes`;
+    notesCount.textContent = i18n('noteCountFiltered', [filteredNotes.length.toString(), allNotes.length.toString()]);
   }
   
   // Show/hide table vs empty state
@@ -193,7 +228,7 @@ async function editNote(note) {
 
 // Delete note
 async function deleteNote(note) {
-  if (!confirm(`Are you sure you want to delete the note for "${note.pattern}"?`)) {
+  if (!confirm(i18n('confirmDelete'))) {
     return;
   }
   
@@ -209,7 +244,7 @@ async function deleteNote(note) {
       email: note.pattern
     });
     
-    showStatus('Note deleted successfully!', 'success');
+    showStatus(i18n('noteDeleted'), 'success');
     
     // Reload notes
     await loadNotes();
@@ -254,7 +289,8 @@ async function loadTemplates() {
 // Render templates list
 function renderTemplates() {
   // Update count
-  templatesCount.textContent = `${allTemplates.length} template${allTemplates.length !== 1 ? 's' : ''}`;
+  const plural = allTemplates.length !== 1 ? 's' : '';
+  templatesCount.textContent = i18n('templateCount', [allTemplates.length.toString(), plural]);
   
   // Show/hide empty state
   if (allTemplates.length === 0) {
@@ -370,7 +406,7 @@ async function handleDrop(e) {
     
     // Re-render
     renderTemplates();
-    showStatus('Template order updated.', 'success');
+    showStatus(i18n('templateOrderUpdated'), 'success');
   }
 }
 
@@ -411,7 +447,7 @@ function startEditTemplate(index, currentText, itemElement) {
 async function saveEditTemplate(index, newText) {
   const text = newText.trim();
   if (!text) {
-    showStatus('Template text cannot be empty.', 'error');
+    showStatus(i18n('templateEmpty'), 'error');
     return;
   }
   
@@ -422,7 +458,7 @@ async function saveEditTemplate(index, newText) {
       template: text
     });
     
-    showStatus('Template updated successfully!', 'success');
+    showStatus(i18n('templateUpdated'), 'success');
     await loadTemplates();
   } catch (error) {
     console.error('Error updating template:', error);
@@ -434,7 +470,7 @@ async function saveEditTemplate(index, newText) {
 async function addTemplate() {
   const text = newTemplateInput.value.trim();
   if (!text) {
-    showStatus('Please enter template text.', 'error');
+    showStatus(i18n('templateEmpty'), 'error');
     return;
   }
   
@@ -445,7 +481,7 @@ async function addTemplate() {
     });
     
     newTemplateInput.value = '';
-    showStatus('Template added successfully!', 'success');
+    showStatus(i18n('templateAdded'), 'success');
     await loadTemplates();
   } catch (error) {
     console.error('Error adding template:', error);
@@ -455,7 +491,7 @@ async function addTemplate() {
 
 // Delete template
 async function deleteTemplate(index) {
-  if (!confirm('Are you sure you want to delete this template?')) {
+  if (!confirm(i18n('confirmDelete'))) {
     return;
   }
   
@@ -465,7 +501,7 @@ async function deleteTemplate(index) {
       index: index
     });
     
-    showStatus('Template deleted successfully!', 'success');
+    showStatus(i18n('templateDeleted'), 'success');
     await loadTemplates();
   } catch (error) {
     console.error('Error deleting template:', error);
@@ -536,6 +572,12 @@ document.addEventListener('DOMContentLoaded', () => {
       addTemplate();
     }
   });
+  
+  // Settings handlers
+  if (languageSelect) {
+    loadSettings();
+    languageSelect.addEventListener('change', saveSettings);
+  }
 });
 
 // Listen for storage changes to refresh the list

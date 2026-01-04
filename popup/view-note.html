@@ -2,27 +2,28 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Sender Notes</title>
+  <title data-i18n="viewNoteTitle">Sender Notes</title>
   <link rel="stylesheet" href="view-note.css">
+  <script src="../shared/i18n.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="sender-header">
-      <strong>Sender:</strong>
+      <strong data-i18n="currentSender">Sender:</strong>
       <span id="sender-email"></span>
     </div>
     <div id="no-notes" class="no-notes">
-      <p>No notes for this sender.</p>
+      <p data-i18n="noNotesForSender">No notes for this sender.</p>
       <div class="buttons">
-        <button id="add-note-btn" class="primary">Add Note</button>
-        <button id="manage-notes-btn-empty" class="icon-btn" title="Manage All Notes">⚙️</button>
+        <button id="add-note-btn" class="primary" data-i18n="addNewNote">Add Note</button>
+        <button id="manage-notes-btn-empty" class="icon-btn" data-i18n-title="manageNotes" title="Manage All Notes">⚙️</button>
       </div>
     </div>
     <div id="has-notes" class="has-notes" style="display: none;">
       <div id="notes-list" class="notes-list"></div>
       <div class="buttons">
-        <button id="add-another-note-btn" class="primary">Add Another Note</button>
-        <button id="manage-notes-btn" class="icon-btn" title="Manage All Notes">⚙️</button>
+        <button id="add-another-note-btn" class="primary" data-i18n="addNewNote">Add Another Note</button>
+        <button id="manage-notes-btn" class="icon-btn" data-i18n-title="manageNotes" title="Manage All Notes">⚙️</button>
       </div>
     </div>
     <div id="status-message" class="status-message"></div>
