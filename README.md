@@ -190,6 +190,43 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+### Contributing Translations
+
+Help make Sender Notes available in more languages! Here's how:
+
+1. **Copy an existing translation folder**
+   - Navigate to `_locales/en/` (English) as a template
+   - Create a new folder with your language code (e.g., `_locales/fr/` for French)
+
+2. **Translate the messages.json file**
+   - Copy `messages.json` from the `en` folder to your new folder
+   - Translate only the `"message"` values, not the keys
+   - Keep placeholders like `$1`, `$COUNT$` unchanged
+
+3. **Example structure:**
+   ```
+   _locales/
+   ├── en/
+   │   └── messages.json  (English - default)
+   ├── el/
+   │   └── messages.json  (Greek)
+   └── fr/
+       └── messages.json  (French - your new translation)
+   ```
+
+4. **Test your translation**
+   - Load the addon in Thunderbird
+   - Go to Settings and select your language
+   - Verify all UI elements display correctly
+
+5. **Submit a Pull Request**
+   - Include your new `_locales/[lang]/messages.json` file
+   - We'll review and merge your contribution!
+
+**Currently supported languages:**
+- English (default)
+- Greek (Ελληνικά)
+
 ---
 
 ## Disclaimer

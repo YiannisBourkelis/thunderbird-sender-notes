@@ -182,8 +182,8 @@
   "contributeTranslation": {
     "message": "Θέλετε να συνεισφέρετε μια μετάφραση;"
   },
-  "contributeTranslationHint": {
-    "message": "Ελέγξτε τον φάκελο _locales στον πηγαίο κώδικα του addon."
+  "contributeTranslationLink": {
+    "message": "Δείτε τον οδηγό μετάφρασης στο GitHub"
   },
   
   "viewNoteTitle": {

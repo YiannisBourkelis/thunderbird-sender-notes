@@ -242,9 +242,9 @@
     "message": "Want to contribute a translation?",
     "description": "Translation contribution prompt"
   },
-  "contributeTranslationHint": {
-    "message": "Check the _locales folder in the addon source for translation files.",
-    "description": "Translation contribution hint"
+  "contributeTranslationLink": {
+    "message": "See the translation guide on GitHub",
+    "description": "Translation contribution link text"
   },
   
   "viewNoteTitle": {

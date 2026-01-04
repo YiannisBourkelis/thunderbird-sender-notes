@@ -523,6 +523,15 @@ button.btn-small {
   color: #868e96;
 }
 
+.contribute-text a {
+  color: #0060df;
+  text-decoration: none;
+}
+
+.contribute-text a:hover {
+  text-decoration: underline;
+}
+
 /* Dark mode for templates and settings */
 @media (prefers-color-scheme: dark) {
   .templates-description {
@@ -592,5 +601,9 @@ button.btn-small {
   .contribute-text,
   .contribute-text small {
     color: #b1b1b3;
+  }
+  
+  .contribute-text a {
+    color: #45a1ff;
   }
 }
