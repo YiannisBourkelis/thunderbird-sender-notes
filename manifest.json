@@ -22,7 +22,15 @@
     "scripting"
   ],
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "storage/StorageAdapter.js",
+      "storage/schema.js",
+      "storage/IndexedDBAdapter.js",
+      "storage/NotesRepository.js",
+      "storage/MigrationRunner.js",
+      "storage/migrations.js",
+      "background.js"
+    ]
   },
   "message_display_action": {
     "default_title": "__MSG_viewNoteTitle__",

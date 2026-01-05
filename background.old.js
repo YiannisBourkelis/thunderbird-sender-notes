@@ -1,51 +1,9 @@
 // Background script for Mail Note addon
-// Uses Repository pattern for storage abstraction
 
-// ==================== Storage Setup ====================
-
-// Initialize the storage repository
-let storage = null;
-let migrationRunner = null;
-
-async function initializeStorage() {
-  if (storage) return storage;
-  
-  // Create IndexedDB adapter and repository
-  const adapter = new IndexedDBAdapter();
-  storage = new NotesRepository(adapter);
-  
-  // Set default templates provider
-  storage.setDefaultTemplatesProvider(getDefaultTemplates);
-  
-  // Initialize and run migrations
-  migrationRunner = new MigrationRunner(adapter);
-  migrationRunner.registerAll(MIGRATIONS);
-  
-  const migrationResult = await migrationRunner.runPending();
-  if (migrationResult.applied.length > 0) {
-    console.log("Mail Note: Applied migrations:", migrationResult.applied);
-  }
-  if (migrationResult.errors.length > 0) {
-    console.error("Mail Note: Migration errors:", migrationResult.errors);
-  }
-  
-  return storage;
-}
-
-// Ensure storage is initialized before any operation
-async function getStorage() {
-  if (!storage) {
-    await initializeStorage();
-  }
-  return storage;
-}
-
-// ==================== Track Open Windows ====================
-
+// Track open note editor windows to avoid duplicates
 const openNoteWindows = new Map(); // key: noteId or email, value: windowId
 
-// ==================== Default Templates ====================
-
+// Get default templates using i18n
 function getDefaultTemplates() {
   return [
     messenger.i18n.getMessage("templateVipPrioritize"),
@@ -67,39 +25,37 @@ function getDefaultTemplates() {
   ];
 }
 
-// ==================== Installation ====================
-
+// Initialize storage on first install
 messenger.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === "install") {
+    // Only initialize notes storage - templates will be set after welcome page language selection
+    await messenger.storage.local.set({ 
+      notes: {}
+    });
     console.log("Mail Note addon installed successfully");
-    
-    // Initialize storage (this will create the IndexedDB)
-    await initializeStorage();
     
     // Open welcome page for language selection
     await messenger.tabs.create({
       url: messenger.runtime.getURL('welcome/welcome.html')
     });
-  } else if (details.reason === "update") {
-    // On update, ensure storage is initialized and migrated if needed
-    await initializeStorage();
   }
 });
 
-// ==================== Context Menus ====================
-
+// Create context menu item for adding notes
 messenger.menus.create({
   id: "add-sender-note",
   title: messenger.i18n.getMessage("contextMenuAddNote"),
   contexts: ["message_list"]
 });
 
+// Create Tools menu item for managing all notes
 messenger.menus.create({
   id: "manage-all-notes",
   title: messenger.i18n.getMessage("toolsMenuManage"),
   contexts: ["tools_menu"]
 });
 
+// Handle context menu clicks
 messenger.menus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "add-sender-note") {
     const messageId = info.selectedMessages?.messages?.[0]?.id;
@@ -107,19 +63,22 @@ messenger.menus.onClicked.addListener(async (info, tab) => {
       const message = await messenger.messages.get(messageId);
       const senderEmail = extractEmail(message.author);
       
+      // Open or focus popup to add/edit note
       const windowKey = `new-${senderEmail}`;
       const popupUrl = `popup/add-note.html?email=${encodeURIComponent(senderEmail)}&author=${encodeURIComponent(message.author)}`;
       await openOrFocusNoteWindow(windowKey, popupUrl);
     }
   } else if (info.menuItemId === "manage-all-notes") {
+    // Open manage notes window
     await openManageNotesWindow();
   }
 });
 
-// ==================== Window Management ====================
-
+// Open the manage notes page (options page)
 async function openManageNotesWindow(tab = 'notes') {
+  // Open options page with tab parameter
   if (tab === 'templates') {
+    // Use tabs.create to open with hash for specific tab
     await messenger.tabs.create({
       url: messenger.runtime.getURL('manage/manage-notes.html#templates')
     });
@@ -128,20 +87,26 @@ async function openManageNotesWindow(tab = 'notes') {
   }
 }
 
+// Helper function to open or focus a note editor window
 async function openOrFocusNoteWindow(windowKey, url) {
+  // Check if window is already open
   if (openNoteWindows.has(windowKey)) {
     const existingWindowId = openNoteWindows.get(windowKey);
     try {
+      // Check if window still exists
       const win = await messenger.windows.get(existingWindowId);
       if (win) {
+        // Focus the existing window
         await messenger.windows.update(existingWindowId, { focused: true });
         return { success: true, focused: true };
       }
     } catch (e) {
+      // Window no longer exists, remove from tracking
       openNoteWindows.delete(windowKey);
     }
   }
   
+  // Create new window
   const newWindow = await messenger.windows.create({
     type: "popup",
     url: url,
@@ -149,6 +114,7 @@ async function openOrFocusNoteWindow(windowKey, url) {
     height: 500
   });
   
+  // Track the new window
   if (newWindow && newWindow.id) {
     openNoteWindows.set(windowKey, newWindow.id);
   }
@@ -156,7 +122,9 @@ async function openOrFocusNoteWindow(windowKey, url) {
   return { success: true, created: true };
 }
 
+// Clean up tracking when windows are closed
 messenger.windows.onRemoved.addListener((windowId) => {
+  // Remove closed window from tracking
   for (const [key, id] of openNoteWindows.entries()) {
     if (id === windowId) {
       openNoteWindows.delete(key);
@@ -165,8 +133,8 @@ messenger.windows.onRemoved.addListener((windowId) => {
   }
 });
 
-// ==================== Message Display Script ====================
-
+// Register the message display script at startup
+// The script will automatically check for notes when injected into a message display
 async function registerMessageDisplayScript() {
   try {
     await messenger.scripting.messageDisplay.registerScripts([{
@@ -176,73 +144,60 @@ async function registerMessageDisplayScript() {
     }]);
     console.log("Mail Note: Banner script registered");
   } catch (e) {
+    // Script might already be registered from a previous session
     if (!e.message?.includes("already registered")) {
       console.log("Script registration:", e.message);
     }
   }
 }
 
+// Initialize the script registration
 registerMessageDisplayScript();
 
-// ==================== Message Handling ====================
-
+// Handle messages from popups and content scripts
 messenger.runtime.onMessage.addListener(async (message, sender) => {
-  // Ensure storage is initialized
-  const repo = await getStorage();
-  
   switch (message.action) {
     case "saveNote":
-      return await repo.saveNote({
-        id: message.noteId,
-        pattern: message.pattern || message.email,
-        matchType: message.matchType || 'exact',
-        note: message.note,
-        originalEmail: message.originalEmail
-      });
+      return await saveNote(message.noteId, message.pattern || message.email, message.matchType || 'exact', message.note, message.originalEmail);
     
     case "getNote":
-      return await repo.findNoteByEmail(message.email);
+      return await getNote(message.email);
     
     case "findMatchingNote":
-      return await repo.findNoteByEmail(message.email);
+      return await findMatchingNote(message.email);
     
     case "findAllMatchingNotes":
-      return await repo.findNotesByEmail(message.email);
+      return await findAllMatchingNotes(message.email);
     
     case "checkDuplicatePattern":
-      return await repo.checkDuplicate(message.pattern, message.matchType, message.excludeNoteId);
+      return await checkDuplicatePattern(message.pattern, message.matchType, message.excludeNoteId);
     
     case "deleteNote":
-      if (message.noteId) {
-        return await repo.deleteNote(message.noteId);
-      } else if (message.email) {
-        return await repo.deleteNoteByEmail(message.email);
-      }
-      return { success: false };
+      return await deleteNote(message.noteId, message.email);
     
     case "getAllNotes":
-      return await repo.getAllNotes();
+      return await getAllNotes();
     
     case "getCurrentMessageSender":
       return await getCurrentMessageSender(sender.tab?.id);
     
     case "getTemplates":
-      return await repo.getTemplates();
+      return await getTemplates();
     
     case "saveTemplates":
-      return await repo.saveTemplates(message.templates);
+      return await saveTemplates(message.templates);
     
     case "addTemplate":
-      return await repo.addTemplate(message.template);
+      return await addTemplate(message.template);
     
     case "updateTemplate":
-      return await repo.updateTemplate(message.index, message.template);
+      return await updateTemplate(message.index, message.template);
     
     case "deleteTemplate":
-      return await repo.deleteTemplate(message.index);
+      return await deleteTemplate(message.index);
     
     case "validatePattern":
-      return repo.validatePattern(message.email, message.pattern, message.matchType);
+      return validatePattern(message.email, message.pattern, message.matchType);
     
     case "openAddNotePopup":
       const addNoteUrl = `popup/add-note.html?email=${encodeURIComponent(message.email)}&author=${encodeURIComponent(message.author)}${message.noteId ? `&noteId=${encodeURIComponent(message.noteId)}` : ''}`;
@@ -258,14 +213,19 @@ messenger.runtime.onMessage.addListener(async (message, sender) => {
       return { success: true };
     
     case "checkCurrentMessageNote":
+      // Called by content script to check if current message sender has a note (single note - backward compat)
       return await checkCurrentMessageNote(sender.tab?.id);
     
     case "checkCurrentMessageNotes":
+      // Called by content script to check if current message sender has notes (multiple notes)
       return await checkCurrentMessageNotes(sender.tab?.id);
     
     case "editNoteFromBanner":
+      // Open or focus the edit popup for a note clicked in the banner
       try {
-        const noteData = await repo.getNoteById(message.noteId);
+        const data = await messenger.storage.local.get('notes');
+        const notes = data.notes || {};
+        const noteData = notes[message.noteId];
         if (noteData) {
           const editUrl = `popup/add-note.html?email=${encodeURIComponent(noteData.pattern || message.noteId)}&author=${encodeURIComponent(noteData.pattern || message.noteId)}&noteId=${encodeURIComponent(message.noteId)}`;
           return await openOrFocusNoteWindow(message.noteId, editUrl);
@@ -277,35 +237,24 @@ messenger.runtime.onMessage.addListener(async (message, sender) => {
       }
     
     case "refreshBanner":
+      // Refresh banner in all tabs displaying messages from this sender
       return await refreshBannerForEmail(message.email);
-    
-    // Settings operations
-    case "getSettings":
-      return await repo.getSettings();
-    
-    case "saveSettings":
-      return await repo.saveSettings(message.settings);
-    
-    case "getSetting":
-      return await repo.getSetting(message.key, message.defaultValue);
-    
-    case "setSetting":
-      return await repo.setSetting(message.key, message.value);
       
     default:
       return null;
   }
 });
 
-// ==================== Banner Injection ====================
-
+// Helper function to inject banner script and CSS into a tab
 async function injectBannerScriptIntoTab(tabId) {
   try {
+    // First inject the CSS
     await messenger.scripting.insertCSS({
       target: { tabId: tabId },
       files: ["messageDisplay/note-banner.css"]
     });
     
+    // Then inject the JS
     await messenger.scripting.executeScript({
       target: { tabId: tabId },
       files: ["messageDisplay/note-banner.js"]
@@ -318,17 +267,22 @@ async function injectBannerScriptIntoTab(tabId) {
   }
 }
 
+// Helper function to send message to tab, injecting script if needed
 async function sendMessageToTabWithInjection(tabId, message) {
+  // First try to send the message
   try {
     await messenger.tabs.sendMessage(tabId, message);
     return true;
   } catch (e) {
+    // Script not loaded - inject it first
     console.log("Script not loaded, injecting...");
     const injected = await injectBannerScriptIntoTab(tabId);
     
     if (injected) {
+      // Wait a moment for script to initialize
       await new Promise(resolve => setTimeout(resolve, 100));
       
+      // Try sending again
       try {
         await messenger.tabs.sendMessage(tabId, message);
         return true;
@@ -341,14 +295,15 @@ async function sendMessageToTabWithInjection(tabId, message) {
   }
 }
 
+// Refresh the note banner for a specific email in all tabs
 async function refreshBannerForEmail(email) {
-  const repo = await getStorage();
-  
   try {
+    // Get all tabs
     const tabs = await messenger.tabs.query({});
     
     for (const tab of tabs) {
       try {
+        // Try to get displayed messages in this tab using MV3 API
         if (messenger.messageDisplay && messenger.messageDisplay.getDisplayedMessages) {
           const messageList = await messenger.messageDisplay.getDisplayedMessages(tab.id);
           const messages = messageList?.messages || [];
@@ -356,21 +311,24 @@ async function refreshBannerForEmail(email) {
           for (const message of messages) {
             const msgEmail = extractEmail(message.author);
             
-            const matchingNotes = await repo.findNotesByEmail(msgEmail);
+            // Find all matching notes for this email
+            const matchingNotes = await findAllMatchingNotes(msgEmail);
             
             if (matchingNotes && matchingNotes.length > 0) {
+              // Send message to tab, injecting script if needed
               await sendMessageToTabWithInjection(tab.id, {
                 action: "showNoteBanners",
                 notes: matchingNotes,
                 senderEmail: msgEmail
               });
             } else if (msgEmail.toLowerCase() === email.toLowerCase()) {
+              // Hide banners if no notes exist
               try {
                 await messenger.tabs.sendMessage(tab.id, {
                   action: "hideNoteBanner"
                 });
               } catch (e) {
-                // Tab might not have the script yet
+                // Tab might not have the script yet - that's OK for hide
               }
             }
           }
@@ -387,8 +345,7 @@ async function refreshBannerForEmail(email) {
   }
 }
 
-// ==================== Helper Functions ====================
-
+// Helper function to extract email from author string
 function extractEmail(author) {
   const match = author.match(/<([^>]+)>/);
   if (match) {
@@ -397,10 +354,161 @@ function extractEmail(author) {
   return author.toLowerCase().trim();
 }
 
+// Generate unique ID for notes
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+// Validate if a pattern matches an email
+function validatePattern(email, pattern, matchType) {
+  const emailLower = email.toLowerCase();
+  const patternLower = pattern.toLowerCase();
+  
+  switch (matchType) {
+    case 'exact':
+      return emailLower === patternLower;
+    case 'startsWith':
+      return emailLower.startsWith(patternLower);
+    case 'endsWith':
+      return emailLower.endsWith(patternLower);
+    case 'contains':
+      return emailLower.includes(patternLower);
+    default:
+      return false;
+  }
+}
+
+// Find a matching note for an email
+async function findMatchingNote(email) {
+  const data = await messenger.storage.local.get("notes");
+  const notes = data.notes || {};
+  
+  // Priority: exact > startsWith > endsWith > contains
+  const priorities = ['exact', 'startsWith', 'endsWith', 'contains'];
+  
+  for (const matchType of priorities) {
+    for (const [noteId, noteData] of Object.entries(notes)) {
+      if (noteData.matchType === matchType && validatePattern(email, noteData.pattern, matchType)) {
+        return { ...noteData, id: noteId };
+      }
+    }
+  }
+  
+  return null;
+}
+
+// Find ALL matching notes for an email (returns array)
+async function findAllMatchingNotes(email) {
+  const data = await messenger.storage.local.get("notes");
+  const notes = data.notes || {};
+  const matchingNotes = [];
+  
+  // Order by priority: exact > startsWith > endsWith > contains
+  const priorities = ['exact', 'startsWith', 'endsWith', 'contains'];
+  
+  for (const matchType of priorities) {
+    for (const [noteId, noteData] of Object.entries(notes)) {
+      if (noteData.matchType === matchType && validatePattern(email, noteData.pattern, matchType)) {
+        matchingNotes.push({ ...noteData, id: noteId });
+      }
+    }
+  }
+  
+  return matchingNotes;
+}
+
+// Check if a duplicate pattern+matchType exists (excluding a specific note ID)
+async function checkDuplicatePattern(pattern, matchType, excludeNoteId = null) {
+  const data = await messenger.storage.local.get("notes");
+  const notes = data.notes || {};
+  
+  for (const [noteId, noteData] of Object.entries(notes)) {
+    if (noteId === excludeNoteId) continue;
+    if (noteData.pattern.toLowerCase() === pattern.toLowerCase() && noteData.matchType === matchType) {
+      return { exists: true, noteId, note: noteData };
+    }
+  }
+  
+  return { exists: false };
+}
+
+// Save a note
+async function saveNote(existingNoteId, pattern, matchType, note, originalEmail) {
+  const data = await messenger.storage.local.get("notes");
+  const notes = data.notes || {};
+  
+  // Check if a note with this exact pattern and matchType already exists (excluding current note)
+  const duplicate = await checkDuplicatePattern(pattern, matchType, existingNoteId);
+  if (duplicate.exists) {
+    return { 
+      success: false, 
+      error: 'duplicate', 
+      message: `A note with this exact pattern and match type already exists. Please edit the existing note instead.`,
+      existingNoteId: duplicate.noteId
+    };
+  }
+  
+  // Preserve the original createdAt date and originalEmail if updating an existing note
+  let originalCreatedAt = null;
+  let preservedOriginalEmail = null;
+  if (existingNoteId && notes[existingNoteId]) {
+    originalCreatedAt = notes[existingNoteId].createdAt;
+    preservedOriginalEmail = notes[existingNoteId].originalEmail;
+    delete notes[existingNoteId];
+  }
+  
+  const now = new Date().toISOString();
+  const noteId = existingNoteId || generateId();
+  
+  notes[noteId] = {
+    pattern: pattern.toLowerCase(),
+    matchType: matchType,
+    note: note,
+    originalEmail: preservedOriginalEmail || originalEmail || pattern,
+    createdAt: originalCreatedAt || now,
+    updatedAt: now
+  };
+  
+  await messenger.storage.local.set({ notes });
+  return { success: true, noteId };
+}
+
+// Get a note for a specific email (finds matching note)
+async function getNote(email) {
+  return await findMatchingNote(email);
+}
+
+// Delete a note by ID or email
+async function deleteNote(noteId, email) {
+  const data = await messenger.storage.local.get("notes");
+  const notes = data.notes || {};
+  
+  if (noteId && notes[noteId]) {
+    delete notes[noteId];
+  } else if (email) {
+    // Find and delete by matching email
+    const match = await findMatchingNote(email);
+    if (match && match.id) {
+      delete notes[match.id];
+    }
+  }
+  
+  await messenger.storage.local.set({ notes });
+  return { success: true };
+}
+
+// Get all notes
+async function getAllNotes() {
+  const data = await messenger.storage.local.get("notes");
+  return data.notes || {};
+}
+
+// Get the sender of the currently displayed message
 async function getCurrentMessageSender(tabId) {
   try {
     console.log("getCurrentMessageSender called with tabId:", tabId);
     
+    // Method 1: Try messageDisplay.getDisplayedMessages() - MV3 API for message tabs
     if (messenger.messageDisplay && messenger.messageDisplay.getDisplayedMessages) {
       try {
         const tabs = await messenger.tabs.query({});
@@ -418,7 +526,7 @@ async function getCurrentMessageSender(tabId) {
               };
             }
           } catch (e) {
-            // Tab doesn't support message display
+            // Tab doesn't support message display, continue
           }
         }
       } catch (e) {
@@ -426,6 +534,7 @@ async function getCurrentMessageSender(tabId) {
       }
     }
     
+    // Method 2: Try mailTabs.getSelectedMessages() - for 3-pane mail tabs
     if (messenger.mailTabs) {
       try {
         const mailTabs = await messenger.mailTabs.query({});
@@ -458,12 +567,54 @@ async function getCurrentMessageSender(tabId) {
   return null;
 }
 
+// Get note templates
+async function getTemplates() {
+  const data = await messenger.storage.local.get("templates");
+  return data.templates || getDefaultTemplates();
+}
+
+// Save all templates
+async function saveTemplates(templates) {
+  await messenger.storage.local.set({ templates });
+  return { success: true };
+}
+
+// Add a new template
+async function addTemplate(template) {
+  const templates = await getTemplates();
+  if (!templates.includes(template)) {
+    templates.push(template);
+    await messenger.storage.local.set({ templates });
+  }
+  return { success: true, templates };
+}
+
+// Delete a template by index
+async function deleteTemplate(index) {
+  const templates = await getTemplates();
+  if (index >= 0 && index < templates.length) {
+    templates.splice(index, 1);
+    await messenger.storage.local.set({ templates });
+  }
+  return { success: true, templates };
+}
+
+// Update a template by index
+async function updateTemplate(index, newText) {
+  const templates = await getTemplates();
+  if (index >= 0 && index < templates.length) {
+    templates[index] = newText;
+    await messenger.storage.local.set({ templates });
+  }
+  return { success: true, templates };
+}
+
+// Check if the current message sender has a note (called by content script)
 async function checkCurrentMessageNote(tabId) {
-  const repo = await getStorage();
-  
   try {
     console.log("checkCurrentMessageNote called for tabId:", tabId);
     
+    // Get the sender of the currently displayed message
     const sender = await getCurrentMessageSender(tabId);
     
     if (!sender || !sender.email) {
@@ -473,7 +624,8 @@ async function checkCurrentMessageNote(tabId) {
     
     console.log("checkCurrentMessageNote: Checking note for", sender.email);
     
-    const matchingNote = await repo.findNoteByEmail(sender.email);
+    // Find matching note
+    const matchingNote = await findMatchingNote(sender.email);
     
     if (matchingNote) {
       console.log("checkCurrentMessageNote: Found note:", matchingNote.note);
@@ -494,12 +646,12 @@ async function checkCurrentMessageNote(tabId) {
   }
 }
 
+// Check if the current message sender has notes (returns ALL matching notes)
 async function checkCurrentMessageNotes(tabId) {
-  const repo = await getStorage();
-  
   try {
     console.log("checkCurrentMessageNotes called for tabId:", tabId);
     
+    // Get the sender of the currently displayed message
     const sender = await getCurrentMessageSender(tabId);
     
     if (!sender || !sender.email) {
@@ -509,7 +661,8 @@ async function checkCurrentMessageNotes(tabId) {
     
     console.log("checkCurrentMessageNotes: Checking notes for", sender.email);
     
-    const matchingNotes = await repo.findNotesByEmail(sender.email);
+    // Find ALL matching notes
+    const matchingNotes = await findAllMatchingNotes(sender.email);
     
     if (matchingNotes && matchingNotes.length > 0) {
       console.log("checkCurrentMessageNotes: Found", matchingNotes.length, "notes");
@@ -528,11 +681,4 @@ async function checkCurrentMessageNotes(tabId) {
   }
 }
 
-// ==================== Initialization ====================
-
-// Initialize storage on script load
-initializeStorage().then(() => {
-  console.log("Mail Note background script loaded with IndexedDB storage");
-}).catch(e => {
-  console.error("Failed to initialize storage:", e);
-});
+console.log("Mail Note background script loaded");
