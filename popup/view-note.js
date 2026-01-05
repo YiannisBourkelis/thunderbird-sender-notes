@@ -312,42 +312,34 @@ async function deleteNote(note) {
 }
 
 // Open note editor - sends message to background to open popup window
-async function openNoteEditor() {
+function openNoteEditor() {
   console.log("Mail Note: Opening note editor for", currentSender);
   
   // Send message to background script to open popup
-  const result = await messenger.runtime.sendMessage({
+  messenger.runtime.sendMessage({
     action: 'openAddNotePopup',
     email: currentSender.email,
     author: currentSender.author
-  });
+  }).catch(() => {}); // Ignore any errors
   
-  console.log("Mail Note: openAddNotePopup result:", result);
-  
-  if (result && result.success) {
-    // Close this popup
-    window.close();
-  }
+  // Close this popup after a brief delay to allow message to be sent
+  setTimeout(() => window.close(), 50);
 }
 
 // Open note editor for a specific note
-async function openNoteEditorForNote(note) {
+function openNoteEditorForNote(note) {
   console.log("Mail Note: Opening note editor for note", note);
   
   // Send message to background script to open popup with note ID
-  const result = await messenger.runtime.sendMessage({
+  messenger.runtime.sendMessage({
     action: 'openAddNotePopup',
     email: currentSender.email,
     author: currentSender.author,
     noteId: note.id
-  });
+  }).catch(() => {}); // Ignore any errors
   
-  console.log("Mail Note: openAddNotePopup result:", result);
-  
-  if (result && result.success) {
-    // Close this popup
-    window.close();
-  }
+  // Close this popup after a brief delay to allow message to be sent
+  setTimeout(() => window.close(), 50);
 }
 
 // Show status message

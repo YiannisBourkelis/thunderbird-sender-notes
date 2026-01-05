@@ -88,16 +88,19 @@ messenger.runtime.onInstalled.addListener(async (details) => {
 
 // ==================== Context Menus ====================
 
-messenger.menus.create({
-  id: "add-sender-note",
-  title: messenger.i18n.getMessage("contextMenuAddNote"),
-  contexts: ["message_list"]
-});
+// Remove any existing menus first (prevents "already exists" errors on reload)
+messenger.menus.removeAll().then(() => {
+  messenger.menus.create({
+    id: "add-sender-note",
+    title: messenger.i18n.getMessage("contextMenuAddNote"),
+    contexts: ["message_list"]
+  });
 
-messenger.menus.create({
-  id: "manage-all-notes",
-  title: messenger.i18n.getMessage("toolsMenuManage"),
-  contexts: ["tools_menu"]
+  messenger.menus.create({
+    id: "manage-all-notes",
+    title: messenger.i18n.getMessage("toolsMenuManage"),
+    contexts: ["tools_menu"]
+  });
 });
 
 messenger.menus.onClicked.addListener(async (info, tab) => {

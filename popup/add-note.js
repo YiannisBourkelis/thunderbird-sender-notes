@@ -391,8 +391,15 @@ function showStatus(message, type) {
 }
 
 // Listen for storage changes to refresh templates
-messenger.storage.onChanged.addListener((changes, areaName) => {
+function onStorageChanged(changes, areaName) {
   if (areaName === 'local' && changes.templates) {
     loadTemplates();
   }
+}
+
+messenger.storage.onChanged.addListener(onStorageChanged);
+
+// Clean up listener when popup closes
+window.addEventListener('beforeunload', () => {
+  messenger.storage.onChanged.removeListener(onStorageChanged);
 });
