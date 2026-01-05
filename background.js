@@ -107,6 +107,18 @@ messenger.menus.onClicked.addListener(async (info, tab) => {
       const message = await messenger.messages.get(messageId);
       const senderEmail = extractEmail(message.author);
       
+      // Check if sender is the user's own account
+      if (await isSentByUser(senderEmail)) {
+        // Show warning popup for sent messages
+        await messenger.windows.create({
+          type: "popup",
+          url: `popup/own-email-warning.html`,
+          width: 400,
+          height: 200
+        });
+        return;
+      }
+      
       const windowKey = `new-${senderEmail}`;
       const popupUrl = `popup/add-note.html?email=${encodeURIComponent(senderEmail)}&author=${encodeURIComponent(message.author)}`;
       await openOrFocusNoteWindow(windowKey, popupUrl);

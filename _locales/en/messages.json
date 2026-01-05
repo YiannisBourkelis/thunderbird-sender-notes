@@ -120,6 +120,18 @@
     "message": "No sender information available.",
     "description": "Error when sender info not available"
   },
+  "ownEmailWarningTitle": {
+    "message": "Cannot Add Note",
+    "description": "Title for own email warning popup"
+  },
+  "ownEmailWarningMessage": {
+    "message": "Notes can only be added to messages received from other people. This message was sent from your own email account.",
+    "description": "Message explaining why note cannot be added"
+  },
+  "buttonClose": {
+    "message": "Close",
+    "description": "Close button text"
+  },
   
   "settingsTitle": {
     "message": "Sender Notes Settings",
