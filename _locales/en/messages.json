@@ -441,10 +441,6 @@
     "description": "Welcome page button"
   },
   
-  "templateVipPrioritize": {
-    "message": "VIP client - prioritize ⭐",
-    "description": "Default template"
-  },
   "templateImportantClient": {
     "message": "Important client - always respond within 24 hours! 🔥",
     "description": "Default template"

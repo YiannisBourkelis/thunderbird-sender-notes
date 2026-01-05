@@ -50,10 +50,36 @@ Both banners display when viewing emails from that sender.
 
 ### ⚡ Quick Notes / Templates
 
-Speed up your workflow with pre-defined templates:
-- "VIP - Respond within 24 hours 🔥"
-- "Slow payer - Follow up on invoices"
-- Create your own custom templates
+Speed up your workflow with pre-defined templates. Sender Notes helps you capture important context about your contacts that you'll need the next time they email you.
+
+#### Template Categories
+
+| Category | Template | How It Helps |
+|----------|----------|--------------|
+| **Priority** | Important client - always respond within 24 hours! 🔥 | Key contacts that expect fast responses |
+| **Trust & Safety** | Potential spam - verify before responding ⚠️ | Protect yourself from phishing or scams |
+| **Trust & Safety** | SPAM - unsubscribe requested ❌ | Track unsubscribe requests you've made |
+| **Risk Management** | Complaint history - handle carefully ⚠️ | Approach sensitive contacts with care |
+| **Risk Management** | History of aggressive communication - keep record 🛑 | Document difficult interactions |
+| **Financial** | Outstanding balance - do not proceed ⚠️ | Avoid extending more credit to debtors |
+| **Financial** | Slow payer - request upfront payment 💰 | Protect your cash flow |
+| **Relationships** | Old colleague / friend 👋 | Remember personal connections |
+| **Communication** | Friendly tone · Informal communication | Match the sender's preferred style |
+| **Privacy** | Confidential client - limit internal sharing 🔒 | Handle sensitive information appropriately |
+| **Scheduling** | Appointment no-show history - confirm before booking ⚠️ | Reduce wasted time from no-shows |
+| **Scheduling** | Frequently late to appointments - allow buffer ⏱️ | Plan your calendar accordingly |
+| **Hospitality** | Frequent guest - remember preferences 🛏️ | Provide personalized service |
+| **Content Type** | Newsletter - low priority 📰 | Triage your inbox effectively |
+| **Academia** | Important research correspondence 🔬 | Track key academic collaborations |
+
+#### Creating Custom Templates
+
+The templates above are just starting points. You can:
+- Create your own templates tailored to your workflow
+- Add templates with domain-specific terminology
+- Use emojis for quick visual recognition
+
+> 💡 **Tip:** Keep only the templates you actually use! A short, focused list lets you find and apply notes quickly. You can always delete unused templates in Settings → Quick Notes Templates.
 
 ### 🎨 Visual Banners
 
