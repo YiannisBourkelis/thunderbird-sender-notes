@@ -19,6 +19,7 @@
     "storage",
     "menus",
     "messagesRead",
+    "accountsRead",
     "scripting"
   ],
   "background": {

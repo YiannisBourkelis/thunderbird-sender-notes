@@ -149,16 +149,25 @@ When you open an email from a sender with notes:
 
 ### Permissions Used
 
-| Permission | Purpose |
-|------------|---------|
-| `storage` | Store notes locally |
-| `messagesRead` | Read sender information from emails |
-| `menus` | Add context menu items |
-| `scripting` | Display banners in message pane |
+This extension requests only the minimum permissions needed to function. Here's exactly what each permission does and why it's required:
+
+| Permission | Why It's Needed | Where It's Used |
+|------------|-----------------|-----------------|
+| `storage` | Store your notes and templates locally on your computer | All notes are saved in IndexedDB, never sent to external servers |
+| `messagesRead` | Read the sender's email address from messages you view | Used to match notes to senders and display relevant banners |
+| `accountsRead` | Read your configured email account addresses | Used to detect messages you sent (so notes only appear on received emails) |
+| `menus` | Add the "Add Note to Sender" option to right-click menus | Creates the context menu entry for adding notes |
+| `scripting` | Inject the note banner into the message display | Displays the yellow note banners at the top of emails |
+
+**Privacy Commitment:**
+- ✅ No data is ever sent to external servers
+- ✅ No tracking or analytics
+- ✅ All data stays on your local machine
+- ✅ Open source - you can verify the code yourself
 
 ### Data Storage
 
-Notes are stored locally using Thunderbird's `storage.local` API:
+Notes are stored locally using IndexedDB:
 
 ```json
 {

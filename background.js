@@ -397,6 +397,75 @@ function extractEmail(author) {
   return author.toLowerCase().trim();
 }
 
+// ==================== User Email Cache ====================
+
+// Cache of user's email addresses (to avoid repeated API calls)
+let userEmailsCache = null;
+
+/**
+ * Get all email addresses belonging to the user's accounts (cached)
+ * @returns {Promise<Set<string>>} Set of user's email addresses (lowercase)
+ */
+async function getUserEmailAddresses() {
+  // Return cached value if available
+  if (userEmailsCache) {
+    return userEmailsCache;
+  }
+  
+  userEmailsCache = new Set();
+  
+  try {
+    const accounts = await messenger.accounts.list();
+    
+    for (const account of accounts) {
+      // Each account can have multiple identities (email addresses)
+      if (account.identities) {
+        for (const identity of account.identities) {
+          if (identity.email) {
+            userEmailsCache.add(identity.email.toLowerCase());
+          }
+        }
+      }
+    }
+    
+    console.log("Mail Note: Cached", userEmailsCache.size, "user email addresses");
+  } catch (e) {
+    console.error("Error getting user email addresses:", e);
+  }
+  
+  return userEmailsCache;
+}
+
+/**
+ * Refresh the user emails cache (call when accounts change)
+ */
+function refreshUserEmailsCache() {
+  userEmailsCache = null;
+}
+
+// Listen for account changes to refresh cache
+if (messenger.accounts.onCreated) {
+  messenger.accounts.onCreated.addListener(refreshUserEmailsCache);
+}
+if (messenger.accounts.onDeleted) {
+  messenger.accounts.onDeleted.addListener(refreshUserEmailsCache);
+}
+if (messenger.accounts.onUpdated) {
+  messenger.accounts.onUpdated.addListener(refreshUserEmailsCache);
+}
+
+/**
+ * Check if a message was sent by the user (sender is one of user's accounts)
+ * @param {string} senderEmail - The sender's email address
+ * @returns {Promise<boolean>} True if the message was sent by the user
+ */
+async function isSentByUser(senderEmail) {
+  if (!senderEmail) return false;
+  
+  const userEmails = await getUserEmailAddresses();
+  return userEmails.has(senderEmail.toLowerCase());
+}
+
 async function getCurrentMessageSender(tabId) {
   try {
     console.log("getCurrentMessageSender called with tabId:", tabId);
@@ -412,8 +481,17 @@ async function getCurrentMessageSender(tabId) {
             if (messageList && messageList.messages && messageList.messages.length > 0) {
               const message = messageList.messages[0];
               console.log("Found displayed message in tab", tab.id, ":", message.author);
+              
+              const senderEmail = extractEmail(message.author);
+              
+              // Skip messages sent by the user - only process received messages
+              if (await isSentByUser(senderEmail)) {
+                console.log("Skipping message sent by user:", senderEmail);
+                return null;
+              }
+              
               return {
-                email: extractEmail(message.author),
+                email: senderEmail,
                 author: message.author
               };
             }
@@ -437,8 +515,17 @@ async function getCurrentMessageSender(tabId) {
             if (messageList && messageList.messages && messageList.messages.length > 0) {
               const message = messageList.messages[0];
               console.log("Found selected message in tab", tab.id, ":", message.author);
+              
+              const senderEmail = extractEmail(message.author);
+              
+              // Skip messages sent by the user - only process received messages
+              if (await isSentByUser(senderEmail)) {
+                console.log("Skipping message sent by user:", senderEmail);
+                return null;
+              }
+              
               return {
-                email: extractEmail(message.author),
+                email: senderEmail,
                 author: message.author
               };
             }
