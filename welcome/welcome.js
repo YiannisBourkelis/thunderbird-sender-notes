@@ -53,11 +53,38 @@ async function updatePageTranslations(language) {
     const response = await fetch(url);
     const messages = await response.json();
     
+    // Helper to get message with substitutions
+    function getMessage(key, substitutions) {
+      if (!messages[key]?.message) return null;
+      let msg = messages[key].message;
+      if (substitutions && substitutions.length > 0) {
+        substitutions.forEach((sub, index) => {
+          msg = msg.replace(new RegExp(`\\$${index + 1}`, 'g'), sub);
+          // Also replace named placeholders like $MENU_ITEM$
+          const placeholders = messages[key].placeholders;
+          if (placeholders) {
+            for (const [name, placeholder] of Object.entries(placeholders)) {
+              if (placeholder.content === `$${index + 1}`) {
+                msg = msg.replace(new RegExp(`\\$${name.toUpperCase()}\\$`, 'gi'), sub);
+              }
+            }
+          }
+        });
+      }
+      return msg;
+    }
+    
     // Update all elements with data-i18n attribute
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      if (messages[key]?.message) {
-        el.textContent = messages[key].message;
+      const subKeys = el.getAttribute('data-i18n-sub');
+      let substitutions = undefined;
+      if (subKeys) {
+        substitutions = subKeys.split(',').map(k => getMessage(k.trim()) || k);
+      }
+      const translated = getMessage(key, substitutions);
+      if (translated) {
+        el.textContent = translated;
       }
     });
     

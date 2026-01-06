@@ -290,6 +290,26 @@ async function registerMessageDisplayScript() {
 
 registerMessageDisplayScript();
 
+// ==================== Broadcast Helpers ====================
+
+/**
+ * Broadcast a message to all tabs (for refreshing manage-notes page)
+ */
+async function broadcastToTabs(message) {
+  try {
+    const tabs = await messenger.tabs.query({});
+    for (const tab of tabs) {
+      try {
+        await messenger.tabs.sendMessage(tab.id, message);
+      } catch (e) {
+        // Tab may not have a listener, ignore
+      }
+    }
+  } catch (e) {
+    console.log("Broadcast error:", e.message);
+  }
+}
+
 // ==================== Message Handling ====================
 
 messenger.runtime.onMessage.addListener(async (message, sender) => {
@@ -297,14 +317,18 @@ messenger.runtime.onMessage.addListener(async (message, sender) => {
   const repo = await getStorage();
   
   switch (message.action) {
-    case "saveNote":
-      return await repo.saveNote({
+    case "saveNote": {
+      const result = await repo.saveNote({
         id: message.noteId,
         pattern: message.pattern || message.email,
         matchType: message.matchType || 'exact',
         note: message.note,
         originalEmail: message.originalEmail
       });
+      // Broadcast to refresh manage-notes page
+      broadcastToTabs({ action: 'notesChanged' });
+      return result;
+    }
     
     case "getNote":
       return await repo.findNoteByEmail(message.email);
@@ -318,13 +342,19 @@ messenger.runtime.onMessage.addListener(async (message, sender) => {
     case "checkDuplicatePattern":
       return await repo.checkDuplicate(message.pattern, message.matchType, message.excludeNoteId);
     
-    case "deleteNote":
+    case "deleteNote": {
+      let result;
       if (message.noteId) {
-        return await repo.deleteNote(message.noteId);
+        result = await repo.deleteNote(message.noteId);
       } else if (message.email) {
-        return await repo.deleteNoteByEmail(message.email);
+        result = await repo.deleteNoteByEmail(message.email);
+      } else {
+        return { success: false };
       }
-      return { success: false };
+      // Broadcast to refresh manage-notes page
+      broadcastToTabs({ action: 'notesChanged' });
+      return result;
+    }
     
     case "getAllNotes":
       return await repo.getAllNotes();
@@ -344,7 +374,7 @@ messenger.runtime.onMessage.addListener(async (message, sender) => {
     case "addTemplate":
       return await repo.addTemplate(message.text);
     
-    case "initializeTemplates":
+    case "initializeTemplates": {
       // Initialize templates with translated strings (called from welcome page)
       // First clear any existing templates, then add new ones
       const existingTemplates = await repo.getTemplates();
@@ -356,6 +386,7 @@ messenger.runtime.onMessage.addListener(async (message, sender) => {
         return { success: true, count: message.templates.length };
       }
       return { success: false, reason: 'templates_exist' };
+    }
     
     case "updateTemplate":
       return await repo.updateTemplate(message.id, message.text);

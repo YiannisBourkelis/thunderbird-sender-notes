@@ -141,8 +141,11 @@ function renderNotes() {
   if (allNotes.length === 0) {
     notesCount.textContent = '';
   } else if (filteredNotes.length === allNotes.length) {
-    const plural = allNotes.length !== 1 ? 's' : '';
-    notesCount.textContent = i18n('noteCount', [allNotes.length.toString(), plural]);
+    if (allNotes.length === 1) {
+      notesCount.textContent = i18n('noteCountSingular');
+    } else {
+      notesCount.textContent = i18n('noteCount', [allNotes.length.toString()]);
+    }
   } else {
     notesCount.textContent = i18n('noteCountFiltered', [filteredNotes.length.toString(), allNotes.length.toString()]);
   }
@@ -170,7 +173,13 @@ function renderNotes() {
   
   if (sortedNotes.length === 0) {
     const row = document.createElement('tr');
-    row.innerHTML = '<td colspan="6" style="text-align: center; color: #737373; padding: 20px;">No notes match your search.</td>';
+    const td = document.createElement('td');
+    td.colSpan = 6;
+    td.style.textAlign = 'center';
+    td.style.color = '#737373';
+    td.style.padding = '20px';
+    td.textContent = 'No notes match your search.';
+    row.appendChild(td);
     notesTbody.appendChild(row);
     return;
   }
@@ -179,21 +188,60 @@ function renderNotes() {
     const row = document.createElement('tr');
     row.dataset.noteId = note.id;
     
-    row.innerHTML = `
-      <td><span class="note-pattern">${escapeHtml(note.pattern)}</span></td>
-      <td><span class="${getMatchTypeBadgeClass(note.matchType)}">${getMatchTypeDisplay(note.matchType)}</span></td>
-      <td><div class="note-preview" title="${escapeHtml(note.note)}">${escapeHtml(note.note)}</div></td>
-      <td class="date-cell">${formatDate(note.createdAt)}</td>
-      <td class="date-cell">${formatDate(note.updatedAt)}</td>
-      <td class="action-buttons">
-        <button class="btn-small primary edit-btn">${i18n('edit')}</button>
-        <button class="btn-small danger delete-btn">${i18n('delete')}</button>
-      </td>
-    `;
+    // Pattern cell
+    const patternTd = document.createElement('td');
+    const patternSpan = document.createElement('span');
+    patternSpan.className = 'note-pattern';
+    patternSpan.textContent = note.pattern;
+    patternTd.appendChild(patternSpan);
+    row.appendChild(patternTd);
     
-    // Add event listeners
-    row.querySelector('.edit-btn').addEventListener('click', () => editNote(note));
-    row.querySelector('.delete-btn').addEventListener('click', () => deleteNote(note));
+    // Match type cell
+    const matchTypeTd = document.createElement('td');
+    const matchTypeSpan = document.createElement('span');
+    matchTypeSpan.className = getMatchTypeBadgeClass(note.matchType);
+    matchTypeSpan.textContent = getMatchTypeDisplay(note.matchType);
+    matchTypeTd.appendChild(matchTypeSpan);
+    row.appendChild(matchTypeTd);
+    
+    // Note preview cell
+    const noteTd = document.createElement('td');
+    const noteDiv = document.createElement('div');
+    noteDiv.className = 'note-preview';
+    noteDiv.title = note.note;
+    noteDiv.textContent = note.note;
+    noteTd.appendChild(noteDiv);
+    row.appendChild(noteTd);
+    
+    // Created date cell
+    const createdTd = document.createElement('td');
+    createdTd.className = 'date-cell';
+    createdTd.textContent = formatDate(note.createdAt);
+    row.appendChild(createdTd);
+    
+    // Updated date cell
+    const updatedTd = document.createElement('td');
+    updatedTd.className = 'date-cell';
+    updatedTd.textContent = formatDate(note.updatedAt);
+    row.appendChild(updatedTd);
+    
+    // Action buttons cell
+    const actionsTd = document.createElement('td');
+    actionsTd.className = 'action-buttons';
+    
+    const editBtn = document.createElement('button');
+    editBtn.className = 'btn-small primary edit-btn';
+    editBtn.textContent = i18n('edit');
+    editBtn.addEventListener('click', () => editNote(note));
+    actionsTd.appendChild(editBtn);
+    
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn-small danger delete-btn';
+    deleteBtn.textContent = i18n('delete');
+    deleteBtn.addEventListener('click', () => deleteNote(note));
+    actionsTd.appendChild(deleteBtn);
+    
+    row.appendChild(actionsTd);
     
     notesTbody.appendChild(row);
   });
@@ -289,8 +337,11 @@ async function loadTemplates() {
 // Render templates list
 function renderTemplates() {
   // Update count
-  const plural = allTemplates.length !== 1 ? 's' : '';
-  templatesCount.textContent = i18n('templateCount', [allTemplates.length.toString(), plural]);
+  if (allTemplates.length === 1) {
+    templatesCount.textContent = i18n('templateCountSingular');
+  } else {
+    templatesCount.textContent = i18n('templateCount', [allTemplates.length.toString()]);
+  }
   
   // Show/hide empty state
   if (allTemplates.length === 0) {
@@ -664,14 +715,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// Listen for storage changes to refresh the list
-messenger.storage.onChanged.addListener((changes, areaName) => {
-  if (areaName === 'local') {
-    if (changes.notes) {
-      loadNotes();
-    }
-    if (changes.templates) {
-      loadTemplates();
-    }
+// Listen for notes/templates changes from background script
+messenger.runtime.onMessage.addListener((message) => {
+  if (message.action === 'notesChanged') {
+    loadNotes();
+  } else if (message.action === 'templatesChanged') {
+    loadTemplates();
   }
 });

@@ -8,10 +8,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "sender-notes@thunderbird.addon",
-      "strict_min_version": "128.0",
-      "data_collection_permissions": {
-        "required": false
-      }
+      "strict_min_version": "128.0"
     }
   },
   "icons": {

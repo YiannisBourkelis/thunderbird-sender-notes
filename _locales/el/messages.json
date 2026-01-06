@@ -149,7 +149,12 @@
     "message": "Δεν υπάρχουν αποθηκευμένες σημειώσεις."
   },
   "noNotesHint": {
-    "message": "Κάντε δεξί κλικ σε ένα email και επιλέξτε \"Προσθήκη Σημείωσης\" για να δημιουργήσετε την πρώτη σας σημείωση."
+    "message": "Κάντε δεξί κλικ σε ένα email και επιλέξτε \"$MENU_ITEM$\" για να δημιουργήσετε την πρώτη σας σημείωση.",
+    "placeholders": {
+      "menu_item": {
+        "content": "$1"
+      }
+    }
   },
   "templatesDescription": {
     "message": "Τα πρότυπα γρήγορων σημειώσεων μπορούν να εισαχθούν με ένα κλικ. Διαχειριστείτε τα πρότυπά σας παρακάτω."
@@ -247,15 +252,15 @@
   },
   
   "noteCount": {
-    "message": "$COUNT$ σημείωση$PLURAL$",
+    "message": "$COUNT$ σημειώσεις",
     "placeholders": {
       "count": {
         "content": "$1"
-      },
-      "plural": {
-        "content": "$2"
       }
     }
+  },
+  "noteCountSingular": {
+    "message": "1 σημείωση"
   },
   "noteCountFiltered": {
     "message": "$FILTERED$ από $TOTAL$ σημειώσεις",
@@ -269,15 +274,15 @@
     }
   },
   "templateCount": {
-    "message": "$COUNT$ πρότυπο$PLURAL$",
+    "message": "$COUNT$ πρότυπα",
     "placeholders": {
       "count": {
         "content": "$1"
-      },
-      "plural": {
-        "content": "$2"
       }
     }
+  },
+  "templateCountSingular": {
+    "message": "1 πρότυπο"
   },
   "save": {
     "message": "Αποθήκευση"
@@ -330,7 +335,12 @@
     "message": "Κάντε δεξί κλικ σε οποιοδήποτε email στα εισερχόμενα"
   },
   "welcomeStep2": {
-    "message": "Επιλέξτε \"Προσθήκη Σημείωσης\" από το μενού"
+    "message": "Επιλέξτε \"$MENU_ITEM$\" από το μενού",
+    "placeholders": {
+      "menu_item": {
+        "content": "$1"
+      }
+    }
   },
   "welcomeStep3": {
     "message": "Η σημείωσή σας θα εμφανιστεί ως banner κατά την προβολή emails από τον αποστολέα"

@@ -75,7 +75,13 @@ async function translatePage() {
   // Translate text content
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    const translated = i18n(key);
+    // Check for substitution keys (comma-separated list of i18n keys to substitute)
+    const subKeys = el.getAttribute('data-i18n-sub');
+    let substitutions = undefined;
+    if (subKeys) {
+      substitutions = subKeys.split(',').map(k => i18n(k.trim()));
+    }
+    const translated = i18n(key, substitutions);
     if (translated && translated !== key) {
       el.textContent = translated;
     }

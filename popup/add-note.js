@@ -168,13 +168,30 @@ function validatePattern(email, pattern, matchType) {
   }
 }
 
+// Helper to set preview content safely
+function setPreviewContent(className, icon, text, boldText = null, suffix = '') {
+  matchPreview.textContent = '';
+  const span = document.createElement('span');
+  span.className = className;
+  span.textContent = icon + ' ' + text;
+  if (boldText) {
+    const strong = document.createElement('strong');
+    strong.textContent = boldText;
+    span.appendChild(strong);
+    if (suffix) {
+      span.appendChild(document.createTextNode(suffix));
+    }
+  }
+  matchPreview.appendChild(span);
+}
+
 // Update match preview
 async function updateMatchPreview() {
   const matchType = matchTypeSelect.value;
   const pattern = matchPatternInput.value.trim();
   
   if (!pattern) {
-    matchPreview.innerHTML = '<span class="preview-error">⚠️ Pattern cannot be empty</span>';
+    setPreviewContent('preview-error', '⚠️', i18n('emptyPattern') || 'Pattern cannot be empty');
     return;
   }
   
@@ -190,28 +207,31 @@ async function updateMatchPreview() {
     });
     
     if (duplicate && duplicate.exists) {
-      matchPreview.innerHTML = `<span class="preview-error">⚠️ ${i18n('duplicatePattern')}</span>`;
+      setPreviewContent('preview-error', '⚠️', i18n('duplicatePattern'));
       return;
     }
     
-    let description = '';
+    let prefix = '';
+    let suffix = '';
     switch (matchType) {
       case 'exact':
-        description = `${i18n('willMatchOnly')} <strong>${pattern}</strong>`;
+        prefix = i18n('willMatchOnly') + ' ';
         break;
       case 'startsWith':
-        description = `${i18n('willMatchStarting')} <strong>${pattern}</strong>*`;
+        prefix = i18n('willMatchStarting') + ' ';
+        suffix = '*';
         break;
       case 'endsWith':
-        description = `${i18n('willMatchEnding')} *<strong>${pattern}</strong>`;
+        prefix = i18n('willMatchEnding') + ' *';
         break;
       case 'contains':
-        description = `${i18n('willMatchContaining')} *<strong>${pattern}</strong>*`;
+        prefix = i18n('willMatchContaining') + ' *';
+        suffix = '*';
         break;
     }
-    matchPreview.innerHTML = `<span class="preview-valid">✓ ${description}</span>`;
+    setPreviewContent('preview-valid', '✓', prefix, pattern, suffix);
   } else {
-    matchPreview.innerHTML = `<span class="preview-error">✗ ${i18n('patternNoMatch')}</span>`;
+    setPreviewContent('preview-error', '✗', i18n('patternNoMatch'));
   }
 }
 

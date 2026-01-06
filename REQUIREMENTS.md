@@ -61,6 +61,35 @@ A Thunderbird addon that allows users to attach notes to email senders. When an 
 - **NFR3.1**: Intuitive UI that follows Thunderbird design patterns
 - **NFR3.2**: Non-intrusive banner that doesn't obstruct email content
 
+## Mozilla Add-on Review Requirements
+
+When submitting to addons.thunderbird.net, the following requirements must be met:
+
+### Icons
+- All icons must be **square** (width = height)
+- Common sizes: 48x48, 96x96 pixels
+
+### Security Requirements
+- **No inline scripts**: All JavaScript must be in external `.js` files, not inside `<script>` tags in HTML
+- **No innerHTML with dynamic content**: Use DOM methods instead:
+  ```javascript
+  // BAD - triggers security warning
+  element.innerHTML = `<span>${userInput}</span>`;
+  
+  // GOOD - safe DOM manipulation
+  const span = document.createElement('span');
+  span.textContent = userInput;
+  element.appendChild(span);
+  ```
+- If `innerHTML` must be used, ensure all dynamic content is properly escaped
+
+### Permissions
+- Thunderbird-specific permissions like `messagesRead` and `accountsRead` may trigger warnings in the Mozilla validator (which is designed for Firefox), but these are valid for Thunderbird and can be ignored
+
+### Content Security Policy (CSP)
+- Default CSP rules prevent inline JavaScript
+- Move all inline scripts to external files
+
 ## Technical Design
 
 ### Storage Structure

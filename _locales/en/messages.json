@@ -198,8 +198,13 @@
     "description": "Empty state message"
   },
   "noNotesHint": {
-    "message": "Right-click on an email and select \"Add Note to Sender\" to create your first note.",
-    "description": "Empty state hint"
+    "message": "Right-click on an email and select \"$MENU_ITEM$\" to create your first note.",
+    "description": "Empty state hint",
+    "placeholders": {
+      "menu_item": {
+        "content": "$1"
+      }
+    }
   },
   "templatesDescription": {
     "message": "Quick notes templates can be inserted into notes with a single click. Manage your templates below.",
@@ -327,16 +332,17 @@
   },
   
   "noteCount": {
-    "message": "$COUNT$ note$PLURAL$",
-    "description": "Note count display",
+    "message": "$COUNT$ notes",
+    "description": "Note count display (plural)",
     "placeholders": {
       "count": {
         "content": "$1"
-      },
-      "plural": {
-        "content": "$2"
       }
     }
+  },
+  "noteCountSingular": {
+    "message": "1 note",
+    "description": "Note count display (singular)"
   },
   "noteCountFiltered": {
     "message": "$FILTERED$ of $TOTAL$ notes",
@@ -351,16 +357,17 @@
     }
   },
   "templateCount": {
-    "message": "$COUNT$ template$PLURAL$",
-    "description": "Template count display",
+    "message": "$COUNT$ templates",
+    "description": "Template count display (plural)",
     "placeholders": {
       "count": {
         "content": "$1"
-      },
-      "plural": {
-        "content": "$2"
       }
     }
+  },
+  "templateCountSingular": {
+    "message": "1 template",
+    "description": "Template count display (singular)"
   },
   "save": {
     "message": "Save",
@@ -429,8 +436,13 @@
     "description": "Welcome page step 1"
   },
   "welcomeStep2": {
-    "message": "Select \"Add Note to Sender\" from the menu",
-    "description": "Welcome page step 2"
+    "message": "Select \"$MENU_ITEM$\" from the menu",
+    "description": "Welcome page step 2",
+    "placeholders": {
+      "menu_item": {
+        "content": "$1"
+      }
+    }
   },
   "welcomeStep3": {
     "message": "Your note will appear as a banner when viewing emails from that sender",
