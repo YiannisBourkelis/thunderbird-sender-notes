@@ -48,21 +48,21 @@ const openNoteWindows = new Map(); // key: noteId or email, value: windowId
 
 function getDefaultTemplates() {
   return [
-    messenger.i18n.getMessage("templateImportantClient"),
-    messenger.i18n.getMessage("templatePotentialSpam"),
-    messenger.i18n.getMessage("templateSpam"),
-    messenger.i18n.getMessage("templateComplaintHistory"),
-    messenger.i18n.getMessage("templateAggressiveCommunication"),
-    messenger.i18n.getMessage("templateOutstandingBalance"),
-    messenger.i18n.getMessage("templateSlowPayer"),
-    messenger.i18n.getMessage("templateOldColleague"),
-    messenger.i18n.getMessage("templateFriendlyInformal"),
-    messenger.i18n.getMessage("templateConfidentialClient"),
-    messenger.i18n.getMessage("templateAppointmentNoShow"),
-    messenger.i18n.getMessage("templateFrequentlyLate"),
-    messenger.i18n.getMessage("templateFrequentGuest"),
-    messenger.i18n.getMessage("templateNewsletter"),
-    messenger.i18n.getMessage("templateResearch")
+    bgI18n("templateImportantClient"),
+    bgI18n("templatePotentialSpam"),
+    bgI18n("templateSpam"),
+    bgI18n("templateComplaintHistory"),
+    bgI18n("templateAggressiveCommunication"),
+    bgI18n("templateOutstandingBalance"),
+    bgI18n("templateSlowPayer"),
+    bgI18n("templateOldColleague"),
+    bgI18n("templateFriendlyInformal"),
+    bgI18n("templateConfidentialClient"),
+    bgI18n("templateAppointmentNoShow"),
+    bgI18n("templateFrequentlyLate"),
+    bgI18n("templateFrequentGuest"),
+    bgI18n("templateNewsletter"),
+    bgI18n("templateResearch")
   ];
 }
 
@@ -343,6 +343,19 @@ messenger.runtime.onMessage.addListener(async (message, sender) => {
     
     case "addTemplate":
       return await repo.addTemplate(message.text);
+    
+    case "initializeTemplates":
+      // Initialize templates with translated strings (called from welcome page)
+      // First clear any existing templates, then add new ones
+      const existingTemplates = await repo.getTemplates();
+      // Only initialize if no templates exist (or only defaults)
+      if (existingTemplates.length === 0 || existingTemplates.every(t => t.isDefault)) {
+        for (const text of message.templates) {
+          await repo.addTemplate(text);
+        }
+        return { success: true, count: message.templates.length };
+      }
+      return { success: false, reason: 'templates_exist' };
     
     case "updateTemplate":
       return await repo.updateTemplate(message.id, message.text);

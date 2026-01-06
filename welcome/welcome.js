@@ -122,11 +122,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       await messenger.storage.local.set({ settings: { language: selectedLanguage } });
       console.log('Language saved');
       
-      // Get templates in the selected language and save them
+      // Get templates in the selected language and save them to IndexedDB
       const translatedTemplates = await getTranslatedTemplates(selectedLanguage);
       console.log('Templates:', translatedTemplates);
-      await messenger.storage.local.set({ templates: translatedTemplates });
-      console.log('Templates saved');
+      await messenger.runtime.sendMessage({ 
+        action: 'initializeTemplates', 
+        templates: translatedTemplates 
+      });
+      console.log('Templates saved to IndexedDB');
       
       // Mark welcome as completed
       await messenger.storage.local.set({ welcomeCompleted: true });
