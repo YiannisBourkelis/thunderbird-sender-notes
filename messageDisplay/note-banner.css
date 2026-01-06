@@ -45,6 +45,8 @@
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: pre-wrap;
+  max-height: calc(1.4em * 10); /* 10 lines max */
+  overflow-y: auto;
 }
 
 .mail-note-match-info {
