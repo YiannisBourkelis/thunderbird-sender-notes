@@ -59,7 +59,10 @@
         <p class="templates-description" data-i18n="templatesDescription">Quick notes templates can be inserted into notes with a single click. Manage your templates below.</p>
         
         <div class="add-template-form">
-          <textarea id="new-template-input" data-i18n-placeholder="newTemplatePlaceholder" placeholder="Enter new template text..." rows="2"></textarea>
+          <div class="add-template-input-wrapper">
+            <textarea id="new-template-input" data-i18n-placeholder="newTemplatePlaceholder" placeholder="Enter new template text..." rows="2"></textarea>
+            <div id="new-template-error" class="template-inline-error" style="display: none;"></div>
+          </div>
           <button id="add-template-btn" class="primary" data-i18n="addTemplate">Add Template</button>
         </div>
         

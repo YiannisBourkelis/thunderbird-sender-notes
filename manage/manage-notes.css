@@ -384,9 +384,15 @@ button.btn-small {
   align-items: flex-start;
 }
 
+.add-template-input-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 #new-template-input,
 .template-edit-input {
-  flex: 1;
+  width: 100%;
   padding: 10px 12px;
   border: 1px solid #ced4da;
   border-radius: 4px;
@@ -400,6 +406,15 @@ button.btn-small {
   outline: none;
   border-color: #0060df;
   box-shadow: 0 0 0 2px rgba(0, 96, 223, 0.2);
+}
+
+.template-inline-error {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+  padding: 4px 8px;
+  background: #fff5f5;
+  border-radius: 4px;
 }
 
 .templates-list {

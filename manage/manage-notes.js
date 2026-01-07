@@ -513,6 +513,7 @@ async function handleDrop(e) {
 function startEditTemplate(template, itemElement) {
   const currentText = template.text;
   itemElement.classList.add('editing');
+  itemElement.draggable = false; // Disable drag during edit
   itemElement.innerHTML = '';
   
   const textarea = document.createElement('textarea');
@@ -520,13 +521,21 @@ function startEditTemplate(template, itemElement) {
   textarea.value = currentText;
   textarea.rows = 2;
   
+  // Prevent drag events from interfering with textarea
+  textarea.addEventListener('mousedown', e => e.stopPropagation());
+  textarea.addEventListener('dragstart', e => e.preventDefault());
+  
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'template-inline-error';
+  errorDiv.style.display = 'none';
+  
   const actions = document.createElement('div');
   actions.className = 'template-actions';
   
   const saveBtn = document.createElement('button');
   saveBtn.className = 'btn-small primary';
   saveBtn.textContent = i18n('save');
-  saveBtn.addEventListener('click', () => saveEditTemplate(template, textarea.value));
+  saveBtn.addEventListener('click', () => saveEditTemplate(template, textarea.value, errorDiv));
   
   const cancelBtn = document.createElement('button');
   cancelBtn.className = 'btn-small';
@@ -538,16 +547,22 @@ function startEditTemplate(template, itemElement) {
   actions.appendChild(saveBtn);
   actions.appendChild(cancelBtn);
   itemElement.appendChild(textarea);
+  itemElement.appendChild(errorDiv);
   itemElement.appendChild(actions);
   
   textarea.focus();
 }
 
 // Save edited template
-async function saveEditTemplate(template, newText) {
+async function saveEditTemplate(template, newText, errorDiv) {
   const text = newText.trim();
   if (!text) {
-    showStatus(i18n('templateEmpty'), 'error');
+    if (errorDiv) {
+      errorDiv.textContent = i18n('templateEmpty');
+      errorDiv.style.display = 'block';
+    } else {
+      showStatus(i18n('templateEmpty'), 'error');
+    }
     return;
   }
   
@@ -578,8 +593,18 @@ async function saveEditTemplate(template, newText) {
 // Add new template
 async function addTemplate() {
   const text = newTemplateInput.value.trim();
+  const errorDiv = document.getElementById('new-template-error');
+  
+  // Hide previous error
+  if (errorDiv) errorDiv.style.display = 'none';
+  
   if (!text) {
-    showStatus(i18n('templateEmpty'), 'error');
+    if (errorDiv) {
+      errorDiv.textContent = i18n('templateEmpty');
+      errorDiv.style.display = 'block';
+    } else {
+      showStatus(i18n('templateEmpty'), 'error');
+    }
     return;
   }
   
