@@ -185,25 +185,30 @@ This extension requests only the minimum permissions needed to function. Here's 
 
 ### Data Storage
 
-Notes are stored locally using IndexedDB:
+Notes are stored locally using IndexedDB with auto-increment integer IDs:
 
+**Notes store:**
 ```json
 {
-  "notes": {
-    "note-id-1": {
-      "pattern": "@example.com",
-      "matchType": "endsWith",
-      "note": "Important domain - handle with care",
-      "createdAt": "2026-01-02T10:00:00Z",
-      "updatedAt": "2026-01-03T15:30:00Z"
-    }
-  },
-  "templates": [
-    "VIP customer ⭐",
-    "Follow up required 📞"
-  ]
+  "id": 1,
+  "pattern": "@example.com",
+  "matchType": "endsWith",
+  "note": "Important domain - handle with care",
+  "createdAt": "2026-01-02T10:00:00.000Z",
+  "updatedAt": "2026-01-03T15:30:00.000Z"
 }
 ```
+
+**Templates store:**
+```json
+{
+  "id": 1,
+  "text": "Important client - always respond within 24 hours! 🔥",
+  "order": 0
+}
+```
+
+Indexes enable efficient lookups by `pattern`, `matchType`, and combined `pattern + matchType`.
 
 ---
 
