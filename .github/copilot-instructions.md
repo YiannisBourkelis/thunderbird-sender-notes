@@ -103,3 +103,5 @@ For deeper context, consult these architecture documents:
 - [STORAGE_ARCHITECTURE.md](../STORAGE_ARCHITECTURE.md) - Repository pattern, IndexedDB schema, migration system
 - [REQUIREMENTS.md](../REQUIREMENTS.md) - Functional requirements, Mozilla review requirements
 - [README.md](../README.md) - User-facing features, permissions explained, installation
+
+**Thunderbird API Reference:** https://webextension-api.thunderbird.net - Official WebExtension API documentation for all `messenger.*` APIs
